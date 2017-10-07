@@ -29,7 +29,8 @@ public class UploadService {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(
 		@FormDataParam("file") InputStream uploadedInputStream,
-		@FormDataParam("file") FormDataContentDisposition fileDetail) {
+		@FormDataParam("file") FormDataContentDisposition fileDetail,
+                @FormDataParam ("typename") String typename) {
                 System.out.println("uploading");
 		String uploadedFileLocation = "C:\\Users\\AnNguyen\\Documents\\NetBeansProjects"
                         + "\\Diagnosis_services\\src\\main\\webapp\\WEB-INF\\files\\" + fileDetail.getFileName();

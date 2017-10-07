@@ -17,7 +17,7 @@
 
 	   <p>
 		Select a file : 
-                <input type="file" name="file"  />
+                <input type="file" name="file" accept="file/xml" />
 	   </p>
 
 	   <input type="submit" value="Upload It" />
