@@ -39,11 +39,9 @@ public class ChildRepository implements RepositoryInterface{
             ResultSet rs=getST.executeQuery();
             while (rs.next()) {      
               
-                Child child= new Child(rs.getInt("c_id"),rs.getInt("u_id"),
-                        rs.getString("c_fullName"), rs.getString("birthdate"),
-                        rs.getDouble("height"),rs.getDouble("weight"), 
-                        rs.getString("farther_name"),rs.getString("morther_name"), 
-                        rs.getInt("deteled"));
+                Child child= new Child(rs.getInt("c_id"), rs.getInt("u_id"), rs.getString("fullName"), 
+                        rs.getDate("date_of_birth"), rs.getString("father_name"), rs.getString("mother_name"),
+                        rs.getInt("extra_info_id"), rs.getDate("date_created"), rs.getInt("deleted"));
               childs.add(child);
             }
             
@@ -60,11 +58,9 @@ public class ChildRepository implements RepositoryInterface{
             ResultSet rs=getST.executeQuery();
             while (rs.next()) {      
               
-                Child child= new Child(rs.getInt("c_id"),rs.getInt("u_id"),
-                        rs.getString("c_fullName"), rs.getString("birthdate"),
-                        rs.getDouble("height"),rs.getDouble("weight"), 
-                        rs.getString("farther_name"),rs.getString("morther_name"), 
-                        rs.getInt("deteled"));
+                Child child= new Child(rs.getInt("c_id"), rs.getInt("u_id"), rs.getString("fullName"), 
+                        rs.getDate("date_of_birth"), rs.getString("father_name"), rs.getString("mother_name"),
+                        rs.getInt("extra_info_id"), rs.getDate("date_created"), rs.getInt("deleted"));
               childs.add(child);
             }
             

@@ -51,8 +51,8 @@ public class UserController {
     return doc;
     }
     @RequestMapping(value = "/getUsers",method = RequestMethod.GET)
-    public ArrayList <User> getAllUser(){
-            ArrayList<User> users= userRepository.getNormalUser();
+    public ArrayList <Object> getAllUser(){
+            ArrayList<Object> users= userRepository.getAll();
             return users;
     }
     @RequestMapping(value = "/saveNew",method = RequestMethod.POST)

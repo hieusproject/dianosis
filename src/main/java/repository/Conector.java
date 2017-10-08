@@ -26,7 +26,7 @@ public class Conector {
         }
         
         try {
-            connection =  DriverManager.getConnection("jdbc:mysql://localhost:3306/autism_diagnosis_service", "root","");
+            connection =  DriverManager.getConnection("jdbc:mysql://localhost:3306/autismdb", "root","");
             System.out.println("connect successfull");
            
         } catch (Exception e) {
@@ -37,10 +37,5 @@ public class Conector {
     }
     
     public static void main(String[] args) throws SQLException {
-        UserRepository usreRepository= new UserRepository();
-        User us= (User) usreRepository.getAll().get(0);
-        User user= new User(0,"user01","user01","user01","Quang Nam","0976679753","annguyen.dev0594@gmail.com","05/05/94",2);
-        usreRepository.save(user);
-        System.out.println(us.getFullname());
     }
 }

@@ -5,6 +5,8 @@
  */
 package entity;
 
+import java.sql.Date;
+
 /**
  *
  * @author AnNguyen
@@ -12,27 +14,26 @@ package entity;
 public class Child {
     private int c_id;
     private int u_id;
-    private String c_fullname;
-    private String birhtdate;
-    private double height; 
-    private double weight;
-    private String farther_name;
-    private String morther_name;
+    private String fullName;
+    private Date date_of_birth;
+    private String father_name;
+    private String mother_name;
+    private int extra_infor_id;
+    private Date date_created;
     private int deleted;
-
     public Child() {
     }
 
-    public Child(int c_id, int u_id, String c_fullname, String birhtdate, double height, double weight, String farther_name, String morther_name, int deleted) {
+    public Child(int c_id, int u_id, String fullName, Date date_of_birth, String father_name, String mother_name,  int extra_infor_id, Date date_created,int deleted) {
         this.c_id = c_id;
         this.u_id = u_id;
-        this.c_fullname = c_fullname;
-        this.birhtdate = birhtdate;
-        this.height = height;
-        this.weight = weight;
-        this.farther_name = farther_name;
-        this.morther_name = morther_name;
+        this.fullName = fullName;
+        this.date_of_birth = date_of_birth;
+        this.father_name = father_name;
+        this.mother_name = mother_name;
         this.deleted = deleted;
+        this.extra_infor_id = extra_infor_id;
+        this.date_created = date_created;
     }
 
     public int getC_id() {
@@ -51,52 +52,36 @@ public class Child {
         this.u_id = u_id;
     }
 
-    public String getC_fullname() {
-        return c_fullname;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setC_fullname(String c_fullname) {
-        this.c_fullname = c_fullname;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getBirhtdate() {
-        return birhtdate;
+    public Date getDate_of_birth() {
+        return date_of_birth;
     }
 
-    public void setBirhtdate(String birhtdate) {
-        this.birhtdate = birhtdate;
+    public void setDate_of_birth(Date date_of_birth) {
+        this.date_of_birth = date_of_birth;
     }
 
-    public double getHeight() {
-        return height;
+    public String getFather_name() {
+        return father_name;
     }
 
-    public void setHeight(double height) {
-        this.height = height;
+    public void setFather_name(String father_name) {
+        this.father_name = father_name;
     }
 
-    public double getWeight() {
-        return weight;
+    public String getMother_name() {
+        return mother_name;
     }
 
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-    public String getFarther_name() {
-        return farther_name;
-    }
-
-    public void setFarther_name(String farther_name) {
-        this.farther_name = farther_name;
-    }
-
-    public String getMorther_name() {
-        return morther_name;
-    }
-
-    public void setMorther_name(String morther_name) {
-        this.morther_name = morther_name;
+    public void setMother_name(String mother_name) {
+        this.mother_name = mother_name;
     }
 
     public int getDeleted() {
@@ -106,6 +91,24 @@ public class Child {
     public void setDeleted(int deleted) {
         this.deleted = deleted;
     }
+
+    public int getExtra_infor_id() {
+        return extra_infor_id;
+    }
+
+    public void setExtra_infor_id(int extra_infor_id) {
+        this.extra_infor_id = extra_infor_id;
+    }
+
+    public Date getDate_created() {
+        return date_created;
+    }
+
+    public void setDate_created(Date date_created) {
+        this.date_created = date_created;
+    }
+
     
+   
   
 }

@@ -6,11 +6,18 @@
 package repository;
 
 
+import DataUtil.Converter;
 import entity.User;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,14 +30,15 @@ public class UserRepository implements RepositoryInterface{
     ArrayList<User> users=new ArrayList<User>();
      try {
       
-           String sqlString= "SELECT * FROM `usertb`";
+           String sqlString= "SELECT * FROM `user`";
            PreparedStatement getStatement= connection.prepareStatement(sqlString);
            ResultSet rs= getStatement.executeQuery();
              while (rs.next()) {                 
-                 User user= new User(rs.getInt("u_id"), rs.getString("_username"),
-                         rs.getString("_password"), rs.getString("fullName"),
+                 User user= new User(rs.getInt("u_id"), rs.getString("username"),
+                         rs.getString("password"), rs.getString("fullName"),
                          rs.getString("address"), rs.getString("phone"),
-                         rs.getString("email"), rs.getString("birthdate"), rs.getInt("role"));
+                         rs.getString("email"), rs.getDate("age"),
+                         rs.getDate("date_created"),rs.getInt("role"));
                  if (user.getRole()==1) {
                      continue;
                  }
@@ -43,17 +51,18 @@ public class UserRepository implements RepositoryInterface{
      public User getUserByInput(String username,String password){
      try {
       
-           String sqlString= "SELECT * FROM `usertb` WHERE _username= ? and _password=?";
+           String sqlString= "SELECT * FROM `user` WHERE _username= ? and _password=?";
            PreparedStatement getStatement= connection.prepareStatement(sqlString);
                         getStatement.setString(1,username);
                         getStatement.setString(2,password);
            ResultSet rs= getStatement.executeQuery();
            
              while (rs.next()) {                 
-                 User user= new User(rs.getInt("u_id"), rs.getString("_username"),
-                         rs.getString("_password"), rs.getString("fullName"),
+                 User user= new User(rs.getInt("u_id"), rs.getString("username"),
+                         rs.getString("password"), rs.getString("fullName"),
                          rs.getString("address"), rs.getString("phone"),
-                         rs.getString("email"), rs.getString("birthdate"), rs.getInt("role"));
+                         rs.getString("email"), rs.getDate("age"),
+                         rs.getDate("date_created"),rs.getInt("role"));
                  return user;
              }
        } catch (Exception e) {
@@ -66,25 +75,32 @@ public class UserRepository implements RepositoryInterface{
        User user=(User) ob; 
        try {  
            String password= PassWordUtil.hashPassword(user.getPassword());
-           String sqlString= "INSERT INTO `usertb`"
-                   + "(`_username`, `_password`, `fullName`, `address`, `phone`, `email`, `birthdate`, `role`)"
-                   + " VALUES (?,?,?,?,?,?,?,?)";
+           String sqlString= "INSERT INTO `user`"
+                   + " (`userName`, `password`, `fullName`, `address`, `phone`, `email`, `age`, `date_created`, `role`)"
+                   + " VALUES (?,?,?,?,?,?,?,?,?)";
            PreparedStatement insertStatement= connection.prepareStatement(sqlString);
+        
            insertStatement.setString(1,user.getUsername());
            insertStatement.setString(2, password);
            insertStatement.setString(3, user.getFullname());
            insertStatement.setString(4, user.getAddress());
            insertStatement.setString(5, user.getPhone());
            insertStatement.setString(6, user.getEmail());
-           insertStatement.setString(7, user.getBirthDate());
-           insertStatement.setInt(8,user.getRole());
+           insertStatement.setDate(7, user.getAge());
+           insertStatement.setDate(8, user.getDate_created());
+           insertStatement.setInt(9,user.getRole());
            int result=insertStatement.executeUpdate();
+          
            if (result==0) {
+               System.out.println("insert failed");
              return false;
+               
+             
          } else {
               return true; 
          }
        } catch (Exception e) {
+           e.printStackTrace();
        }
     return false;  
     }
@@ -101,15 +117,16 @@ public class UserRepository implements RepositoryInterface{
         ArrayList<Object> users=new ArrayList<Object>();
      try {
       
-           String sqlString= "SELECT * FROM `usertb`";
+           String sqlString= "SELECT * FROM `user`";
            PreparedStatement getStatement= connection.prepareStatement(sqlString);
            ResultSet rs= getStatement.executeQuery();
              while (rs.next()) {    
             
-                 User user= new User(rs.getInt("u_id"), rs.getString("_username"),
-                         rs.getString("_password"), rs.getString("fullName"),
+                  User user= new User(rs.getInt("u_id"), rs.getString("username"),
+                         rs.getString("password"), rs.getString("fullName"),
                          rs.getString("address"), rs.getString("phone"),
-                         rs.getString("email"), rs.getString("birthdate"), rs.getInt("role"));
+                         rs.getString("email"), rs.getDate("age"),
+                         rs.getDate("date_created"),rs.getInt("role"));
                  users.add(user);
              }
        } catch (Exception e) {
@@ -117,7 +134,20 @@ public class UserRepository implements RepositoryInterface{
     return  users;
     }
      
-    public static void main(String[] args) {
-        new UserRepository().getAll();
+    public static void main(String[] args) throws ParseException {
+        String dateStr="05/05/1994";
+        SimpleDateFormat format= new SimpleDateFormat("mm/dd/yyyy");
+        java.util.Date date= format.parse(dateStr);
+        java.util.Date currentDate= new java.util.Date();
+        User user= new User(0, "admin", "admin",
+                "Nguyễn Admin", "QN", "0976679753","adcm.edu@gmail",
+                Converter.toSQLDATE(date), Converter.toSQLDATE(currentDate), 0);
+        UserRepository uRepository= new UserRepository();
+        System.out.println(uRepository.getAll());
+        try {
+            System.out.println(PassWordUtil.hashPassword("user01"));
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

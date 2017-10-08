@@ -5,6 +5,8 @@
  */
 package entity;
 
+import java.sql.Date;
+
 /**
  *
  * @author AnNguyen
@@ -17,13 +19,14 @@ public class User {
     private String address;
     private String phone;
     private String email;
-    private String birthDate;
+    private Date age;
+    private Date  date_created;
     private int role;
 
     public User() {
     }
 
-    public User(int u_id, String username, String password, String fullname, String address, String phone, String email, String birthDate, int role) {
+    public User(int u_id, String username, String password, String fullname, String address, String phone, String email, Date age, Date date_created, int role) {
         this.u_id = u_id;
         this.username = username;
         this.password = password;
@@ -31,7 +34,8 @@ public class User {
         this.address = address;
         this.phone = phone;
         this.email = email;
-        this.birthDate = birthDate;
+        this.age = age;
+        this.date_created = date_created;
         this.role = role;
     }
 
@@ -91,12 +95,20 @@ public class User {
         this.email = email;
     }
 
-    public String getBirthDate() {
-        return birthDate;
+    public Date getAge() {
+        return age;
     }
 
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
+    public void setAge(Date age) {
+        this.age = age;
+    }
+
+    public Date getDate_created() {
+        return date_created;
+    }
+
+    public void setDate_created(Date date_created) {
+        this.date_created = date_created;
     }
 
     public int getRole() {
@@ -106,5 +118,8 @@ public class User {
     public void setRole(int role) {
         this.role = role;
     }
+
+   
     
+   
 }

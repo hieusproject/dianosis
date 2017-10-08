@@ -12,18 +12,18 @@ package entity;
 public class Examination {
     private int ex_id;
     private int c_id;
-    private int rule_id;
-    private String result_ex;
+    private int test_rule_id;
+    private String exam_result;
     private String date;
 
     public Examination() {
     }
 
-    public Examination(int ex_id, int c_id, int rule_id, String result_ex, String date) {
+    public Examination(int ex_id, int c_id, int test_rule_id, String exam_result, String date) {
         this.ex_id = ex_id;
         this.c_id = c_id;
-        this.rule_id = rule_id;
-        this.result_ex = result_ex;
+        this.test_rule_id = test_rule_id;
+        this.exam_result = exam_result;
         this.date = date;
     }
 
@@ -43,20 +43,20 @@ public class Examination {
         this.c_id = c_id;
     }
 
-    public int getRule_id() {
-        return rule_id;
+    public int getTest_rule_id() {
+        return test_rule_id;
     }
 
-    public void setRule_id(int rule_id) {
-        this.rule_id = rule_id;
+    public void setTest_rule_id(int test_rule_id) {
+        this.test_rule_id = test_rule_id;
     }
 
-    public String getResult_ex() {
-        return result_ex;
+    public String getExam_result() {
+        return exam_result;
     }
 
-    public void setResult_ex(String result_ex) {
-        this.result_ex = result_ex;
+    public void setExam_result(String exam_result) {
+        this.exam_result = exam_result;
     }
 
     public String getDate() {
@@ -66,6 +66,7 @@ public class Examination {
     public void setDate(String date) {
         this.date = date;
     }
-    
+
+   
     
 }

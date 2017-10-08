@@ -13,19 +13,17 @@ public class Test {
     private int test_id;
     private int type_id;
     private int ex_id;
-    private String test_result_String;
-    private String conclude_test;
+    private String result_test;
     private int deleted;
 
     public Test() {
     }
 
-    public Test(int test_id, int type_id, int ex_id, String test_result_String, String conclude_test, int deleted) {
+    public Test(int test_id, int type_id, int ex_id, String result_test, int deleted) {
         this.test_id = test_id;
         this.type_id = type_id;
         this.ex_id = ex_id;
-        this.test_result_String = test_result_String;
-        this.conclude_test = conclude_test;
+        this.result_test = result_test;
         this.deleted = deleted;
     }
 
@@ -53,20 +51,12 @@ public class Test {
         this.ex_id = ex_id;
     }
 
-    public String getTest_result_String() {
-        return test_result_String;
+    public String getResult_test() {
+        return result_test;
     }
 
-    public void setTest_result_String(String test_result_String) {
-        this.test_result_String = test_result_String;
-    }
-
-    public String getConclude_test() {
-        return conclude_test;
-    }
-
-    public void setConclude_test(String conclude_test) {
-        this.conclude_test = conclude_test;
+    public void setResult_test(String result_test) {
+        this.result_test = result_test;
     }
 
     public int getDeleted() {
@@ -76,6 +66,7 @@ public class Test {
     public void setDeleted(int deleted) {
         this.deleted = deleted;
     }
-    
+
+   
     
 }
