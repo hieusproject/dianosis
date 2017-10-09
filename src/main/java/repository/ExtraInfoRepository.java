@@ -5,8 +5,8 @@
  */
 package repository;
 
-import entity.Examination;
-import entity.Test;
+import entity.ExtraInfo;
+import entity.TestType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,28 +14,29 @@ import java.util.ArrayList;
 
 /**
  *
- * @author AnNguyen
+ * @author VanHau
  */
-public class TestRepository implements RepositoryInterface {
-     private static Connection connection= Conector.getConnection();
+public class ExtraInfoRepository implements RepositoryInterface{
+    private static Connection connection= Conector.getConnection();
      @Override
     public ArrayList<Object> getAll() {
-        ArrayList<Object> tests= new ArrayList<Object>();
+        ArrayList<Object> extra_infos= new ArrayList<Object>();
         try {
-            String getSQL="SELECT * FROM `test`";
+            String getSQL="SELECT * FROM `extra_info`";
             PreparedStatement getST= connection.prepareStatement(getSQL);
             ResultSet rs=getST.executeQuery();
-            while (rs.next()) {      
-              
-                Test test= new Test(rs.getInt("test_id"), rs.getInt("type_id"), rs.getInt("ex_id"),rs.getString("result_test"),
-                        rs.getInt("deleted"));
-              tests.add(test);
+            while (rs.next()) {     
+                ExtraInfo extra_info= new ExtraInfo(rs.getInt("c_id"), rs.getInt("father_career_id"),rs.getInt("divorce_status")
+                ,rs.getInt("mother_career_id"),rs.getInt("monthly_income"),rs.getFloat("height"),
+                rs.getFloat("weight"),rs.getInt("sex"),rs.getInt("group"));
+                extra_infos.add(extra_info);
             }
             
         } catch (Exception e) {
         }
-        return tests;
+        return extra_infos;
     }
+
     @Override
     public boolean save(Object ob) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -50,8 +51,4 @@ public class TestRepository implements RepositoryInterface {
     public boolean deleteById(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-   
-
-    
 }

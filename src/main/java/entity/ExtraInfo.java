@@ -10,20 +10,13 @@ package entity;
  * @author VanHau
  */
 public class ExtraInfo {
-   private int c_id,father_career_id,divorce_status,mother_career_id,monthly_income,sex,froup;
+   private int c_id,father_career_id,divorce_status,mother_career_id,monthly_income;
    private float height,weight;
+   private int sex,group;
 
-    public ExtraInfo(int c_id, int father_career_id, int divorce_status, int mother_career_id, int monthly_income, int sex, int froup, float height, float weight) {
-        this.c_id = c_id;
-        this.father_career_id = father_career_id;
-        this.divorce_status = divorce_status;
-        this.mother_career_id = mother_career_id;
-        this.monthly_income = monthly_income;
-        this.sex = sex;
-        this.froup = froup;
-        this.height = height;
-        this.weight = weight;
-    }
+    
+
+   
 
     public int getC_id() {
         return c_id;
@@ -49,8 +42,8 @@ public class ExtraInfo {
         return sex;
     }
 
-    public int getFroup() {
-        return froup;
+    public int getGroup() {
+        return group;
     }
 
     public float getHeight() {
@@ -85,8 +78,20 @@ public class ExtraInfo {
         this.sex = sex;
     }
 
-    public void setFroup(int froup) {
-        this.froup = froup;
+    public void setGroup(int group) {
+        this.group = group;
+    }
+
+    public ExtraInfo(int c_id, int father_career_id, int divorce_status, int mother_career_id, int monthly_income, float height, float weight, int sex, int group) {
+        this.c_id = c_id;
+        this.father_career_id = father_career_id;
+        this.divorce_status = divorce_status;
+        this.mother_career_id = mother_career_id;
+        this.monthly_income = monthly_income;
+        this.height = height;
+        this.weight = weight;
+        this.sex = sex;
+        this.group = group;
     }
 
     public void setHeight(float height) {

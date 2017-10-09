@@ -10,14 +10,17 @@ package entity;
  * @author VanHau
  */
 public class ChildChild {
-    private int c_id1,c_id2;
+    private int c_id1;
+    
     private float similarity;
+    private int c_id2;
 
-    public ChildChild(int c_id1, int c_id2, float similarity) {
+    public ChildChild(int c_id1, float similarity, int c_id2) {
         this.c_id1 = c_id1;
-        this.c_id2 = c_id2;
         this.similarity = similarity;
+        this.c_id2 = c_id2;
     }
+   
 
     public void setC_id1(int c_id1) {
         this.c_id1 = c_id1;

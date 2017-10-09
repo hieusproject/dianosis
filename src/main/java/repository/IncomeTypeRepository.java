@@ -5,8 +5,8 @@
  */
 package repository;
 
-import entity.Examination;
-import entity.Test;
+import entity.IncomeType;
+import entity.TestType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,28 +14,27 @@ import java.util.ArrayList;
 
 /**
  *
- * @author AnNguyen
+ * @author VanHau
  */
-public class TestRepository implements RepositoryInterface {
-     private static Connection connection= Conector.getConnection();
+public class IncomeTypeRepository implements RepositoryInterface{
+    private static Connection connection= Conector.getConnection();
      @Override
     public ArrayList<Object> getAll() {
-        ArrayList<Object> tests= new ArrayList<Object>();
+        ArrayList<Object> imcome_types= new ArrayList<Object>();
         try {
-            String getSQL="SELECT * FROM `test`";
+            String getSQL="SELECT * FROM `imcome_type`";
             PreparedStatement getST= connection.prepareStatement(getSQL);
             ResultSet rs=getST.executeQuery();
-            while (rs.next()) {      
-              
-                Test test= new Test(rs.getInt("test_id"), rs.getInt("type_id"), rs.getInt("ex_id"),rs.getString("result_test"),
-                        rs.getInt("deleted"));
-              tests.add(test);
+            while (rs.next()) {     
+                IncomeType imcome_type= new IncomeType(rs.getInt("income_id"), rs.getString("range"));
+                imcome_types.add(imcome_type);
             }
             
         } catch (Exception e) {
         }
-        return tests;
+        return imcome_types;
     }
+
     @Override
     public boolean save(Object ob) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -50,8 +49,4 @@ public class TestRepository implements RepositoryInterface {
     public boolean deleteById(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-   
-
-    
 }

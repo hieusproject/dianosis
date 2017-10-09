@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  * @author AnNguyen
  */
-public class ExaminationRepository {
+public class ExaminationRepository implements RepositoryInterface{
      private static Connection connection= Conector.getConnection();
     public ArrayList<Object> getAll() {
         ArrayList<Object> childs= new ArrayList<Object>();
@@ -34,5 +34,20 @@ public class ExaminationRepository {
         } catch (Exception e) {
         }
         return childs;
+    }
+
+    @Override
+    public boolean save(Object ob) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean update(Object ob) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean deleteById(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

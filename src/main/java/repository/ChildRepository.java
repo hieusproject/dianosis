@@ -6,22 +6,41 @@
 package repository;
 
 import entity.Child;
+import entity.Token;
 import entity.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-/**
- *
- * @author AnNguyen
- */
 public class ChildRepository implements RepositoryInterface{
     private static Connection connection= Conector.getConnection();
 
     public boolean save(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        try {
+            Child child= (Child) ob;
+             String sqlString= "INSERT INTO `child` VALUES (?,?,?,?,?,?,?,?,?)";
+           PreparedStatement insertStatement= connection.prepareStatement(sqlString);
+           insertStatement.setInt(1,child.getC_id());
+           insertStatement.setInt(2,child.getU_id());
+           insertStatement.setString(3,child.getFullName());
+           insertStatement.setDate(4,child.getDate_of_birth());
+           insertStatement.setString(5,child.getFather_name());
+           insertStatement.setString(6,child.getMother_name());
+           insertStatement.setInt(7,child.getExtra_infor_id());
+           insertStatement.setDate(8,child.getDate_created());
+           insertStatement.setInt(9,child.getDeleted());
+           int result=insertStatement.executeUpdate();
+          
+             if (result==0) {
+                    System.out.println("insert failed");
+                    return false;
+              } else {
+              return true; 
+                }
+        } catch (Exception e) {
+            return false;
+        }}
 
     public boolean update(Object ob) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
