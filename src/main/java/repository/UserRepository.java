@@ -51,7 +51,7 @@ public class UserRepository implements RepositoryInterface{
      public User getUserByInput(String username,String password){
      try {
       
-           String sqlString= "SELECT * FROM `user` WHERE _username= ? and _password=?";
+           String sqlString= "SELECT * FROM `user` WHERE userName= ? and password=?";
            PreparedStatement getStatement= connection.prepareStatement(sqlString);
                         getStatement.setString(1,username);
                         getStatement.setString(2,password);
@@ -74,14 +74,13 @@ public class UserRepository implements RepositoryInterface{
     public boolean save(Object ob) {
        User user=(User) ob; 
        try {  
-           String password= PassWordUtil.hashPassword(user.getPassword());
+         
            String sqlString= "INSERT INTO `user`"
                    + " (`userName`, `password`, `fullName`, `address`, `phone`, `email`, `age`, `date_created`, `role`)"
                    + " VALUES (?,?,?,?,?,?,?,?,?)";
            PreparedStatement insertStatement= connection.prepareStatement(sqlString);
-        
            insertStatement.setString(1,user.getUsername());
-           insertStatement.setString(2, password);
+           insertStatement.setString(2,user.getPassword());
            insertStatement.setString(3, user.getFullname());
            insertStatement.setString(4, user.getAddress());
            insertStatement.setString(5, user.getPhone());
@@ -143,11 +142,8 @@ public class UserRepository implements RepositoryInterface{
                 "Nguyễn Admin", "QN", "0976679753","adcm.edu@gmail",
                 Converter.toSQLDATE(date), Converter.toSQLDATE(currentDate), 0);
         UserRepository uRepository= new UserRepository();
-        System.out.println(uRepository.getAll());
-        try {
-            System.out.println(PassWordUtil.hashPassword("user01"));
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        System.out.println(uRepository.getAll());
+        User us= uRepository.getUserByInput("user01","aad415a73c4cef1ef94a5c00b2642b571a3e5494536328ad960db61889bd9368");
+        System.out.println(us.getFullname());
     }
 }
