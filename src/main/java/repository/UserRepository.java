@@ -6,7 +6,7 @@
 package repository;
 
 
-import DataUtil.DataUtil;
+import DataUtil.Converter;
 import entity.User;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -68,27 +68,6 @@ public class UserRepository implements RepositoryInterface{
        } catch (Exception e) {
        }
     return null;
-    
-    }
-      public boolean isExist(String username){
-     try {
-      
-           String sqlString= "SELECT * FROM `user` WHERE userName= ?";
-           PreparedStatement getStatement= connection.prepareStatement(sqlString);
-                        getStatement.setString(1,username);     
-           ResultSet rs= getStatement.executeQuery();
-           
-             while (rs.next()) {                 
-                 User user= new User(rs.getInt("u_id"), rs.getString("username"),
-                         rs.getString("password"), rs.getString("fullName"),
-                         rs.getString("address"), rs.getString("phone"),
-                         rs.getString("email"), rs.getDate("age"),
-                         rs.getDate("date_created"),rs.getInt("role"));
-                 return true;
-             }
-       } catch (Exception e) {
-       }
-    return false;
     
     }
 
@@ -161,7 +140,7 @@ public class UserRepository implements RepositoryInterface{
         java.util.Date currentDate= new java.util.Date();
         User user= new User(0, "admin", "admin",
                 "Nguyễn Admin", "QN", "0976679753","adcm.edu@gmail",
-                DataUtil.toSQLDATE(date), DataUtil.toSQLDATE(currentDate), 0);
+                Converter.toSQLDATE(date), Converter.toSQLDATE(currentDate), 0);
         UserRepository uRepository= new UserRepository();
 //        System.out.println(uRepository.getAll());
         User us= uRepository.getUserByInput("user01","aad415a73c4cef1ef94a5c00b2642b571a3e5494536328ad960db61889bd9368");

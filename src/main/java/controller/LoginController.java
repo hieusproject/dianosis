@@ -5,7 +5,7 @@
  */
 package controller;
 
-import DataUtil.DataUtil;
+import DataUtil.Converter;
 import entity.Token;
 import entity.User;
 import java.security.NoSuchAlgorithmException;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import DataUtil.PassWordUtil;
+import repository.PassWordUtil;
 import repository.TokenRepository;
 import repository.UserRepository;
 
@@ -33,7 +33,7 @@ public class LoginController {
             //new token,save token
             String newCode= Integer.toString(user.getU_id())+
                     Integer.toString(tokenRepository.getMaxId())
-                    +DataUtil.generatingRandomCode();
+                    +Converter.generatingRandomCode();
             newCode= PassWordUtil.hashPassword(newCode);
             Token tk= new Token(0,user.getU_id(), newCode);
             tokenRepository.save(tk);
