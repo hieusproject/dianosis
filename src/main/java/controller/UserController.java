@@ -27,7 +27,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.xml.sax.SAXException;
 import repository.ChildRepository;
-import repository.PassWordUtil;
+import DataUtil.PassWordUtil;
+import entity.Token;
+import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
+import repository.TokenRepository;
 import repository.UserRepository;
 
 /**
@@ -39,6 +44,7 @@ import repository.UserRepository;
 public class UserController {
     private static UserRepository userRepository= new UserRepository();
     private static ChildRepository childRepository=new ChildRepository();
+    private static TokenRepository tokenRepository= new TokenRepository();
     @RequestMapping(value = "/hello",method = RequestMethod.GET)
     public Object sayHello() throws ParserConfigurationException, SAXException, IOException{
     File xmlfile=
@@ -55,12 +61,51 @@ public class UserController {
             ArrayList<Object> users= userRepository.getAll();
             return users;
     }
-    @RequestMapping(value = "/saveNew",method = RequestMethod.POST)
-    public boolean saveNewUser(@RequestBody User newUser){
-        if (userRepository.save(newUser)) {
-            return true;
-        } 
-     return false;
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    public Map saveNewUser(@RequestParam(name="username") String username,@RequestParam(name="password") String password,
+                                @RequestParam(name="fullname") String fullname, @RequestParam(name="address") String address,
+                                @RequestParam(name="phone") String phone, @RequestParam(name="email") String email,
+                                @RequestParam(name="age") String ageStr, @RequestParam(name="date_created") String date_createdStr,
+                                @RequestParam(name="role") String role
+                                ) throws NoSuchAlgorithmException{
+        String error="";
+        Map respone= new HashMap();
+        Date age=null;
+        Date date_create=null;
+        boolean success=false;
+        try {
+            age= DataUtil.DataUtil.toSQLDATE(DataUtil.DataUtil.StringtoDate(ageStr));
+            date_create=DataUtil.DataUtil.toSQLDATE(DataUtil.DataUtil.StringtoDate(date_createdStr));
+            success=true;
+        } catch (Exception e) {
+            error="Dinh dang ngay khong dung";
+            success=false;
+        }
+        if (userRepository.isExist(username)) {
+            success=false;
+            error="User nay da ton tai";
+        }
+        int u_id=0;
+        if (success) {
+              User newUser= new User(0, username, password, fullname, address, phone, email, age, date_create, 0);
+              success= userRepository.save(newUser);
+              newUser= userRepository.getUserByInput(username, password);
+              u_id= newUser.getU_id();
+        }
+      
+        if (success) {
+            String newToken= DataUtil.DataUtil.newTokenforUser(u_id);
+            Token token= new Token(0, u_id, newToken);
+            tokenRepository.save(token);
+            respone.put("status", "1");
+            respone.put("token", newToken);
+        } else {
+            respone.put("status", "0");
+            respone.put("fail_message", error);
+        }
+        
+          
+       return respone; 
     }
     @RequestMapping(value = "/getUserByinput",method = RequestMethod.POST)
     public User getUserByInput(@RequestParam(name="username") String username,
