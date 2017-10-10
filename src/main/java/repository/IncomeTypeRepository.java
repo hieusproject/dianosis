@@ -5,6 +5,7 @@
  */
 package repository;
 
+import entity.ExtraInfo;
 import entity.IncomeType;
 import entity.TestType;
 import java.sql.Connection;
@@ -35,10 +36,26 @@ public class IncomeTypeRepository implements RepositoryInterface{
         return imcome_types;
     }
 
-    @Override
-    public boolean save(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+       @Override
+     public boolean save(Object ob) {
+        try {
+            IncomeType it= (IncomeType) ob;
+             String sqlString= "INSERT INTO `imcome_type` (`range`)"
+                     + " VALUES (?)";
+           PreparedStatement insertStatement= connection.prepareStatement(sqlString);
+           insertStatement.setString(1,it.getRange());
+           int result=insertStatement.executeUpdate();
+          
+             if (result==0) {
+                    System.out.println("insert failed");
+                    return false;
+              } else {
+              return true; 
+                }
+        } catch (Exception e) {
+            return false;
+        }}
+
 
     @Override
     public boolean update(Object ob) {

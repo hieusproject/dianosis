@@ -19,17 +19,16 @@ public class ChildRepository implements RepositoryInterface{
     public boolean save(Object ob) {
         try {
             Child child= (Child) ob;
-             String sqlString= "INSERT INTO `child` VALUES (?,?,?,?,?,?,?,?,?)";
+             String sqlString= "INSERT INTO `child`(`u_id`,`fullName`,`date_of_birth`,`father_name`,`mother_name`,`extra_info_id`,`date_created`,`deleted`) VALUES (?,?,?,?,?,?,?,?)";
            PreparedStatement insertStatement= connection.prepareStatement(sqlString);
-           insertStatement.setInt(1,child.getC_id());
-           insertStatement.setInt(2,child.getU_id());
-           insertStatement.setString(3,child.getFullName());
-           insertStatement.setDate(4,child.getDate_of_birth());
-           insertStatement.setString(5,child.getFather_name());
-           insertStatement.setString(6,child.getMother_name());
-           insertStatement.setInt(7,child.getExtra_infor_id());
-           insertStatement.setDate(8,child.getDate_created());
-           insertStatement.setInt(9,child.getDeleted());
+           insertStatement.setInt(1,child.getU_id());
+           insertStatement.setString(2,child.getFullName());
+           insertStatement.setDate(3,child.getDate_of_birth());
+           insertStatement.setString(4,child.getFather_name());
+           insertStatement.setString(5,child.getMother_name());
+           insertStatement.setInt(6,child.getExtra_infor_id());
+           insertStatement.setDate(7,child.getDate_created());
+           insertStatement.setInt(8,child.getDeleted());
            int result=insertStatement.executeUpdate();
           
              if (result==0) {

@@ -7,6 +7,7 @@ package repository;
 
 import entity.CareerType;
 import entity.TestType;
+import entity.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +38,30 @@ public class CareerTypeRepository implements RepositoryInterface{
 
     @Override
     public boolean save(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        CareerType ct=(CareerType) ob; 
+       try {  
+         
+           String sqlString= "INSERT INTO `carrer_type`"
+                   + " ( `carrer_title`, `career_description`)"
+                   + " VALUES (?,?)";
+           PreparedStatement insertStatement= connection.prepareStatement(sqlString);
+           insertStatement.setString(1,ct.getCarrer_title());
+           insertStatement.setString(2, ct.getCareer_description());
+          
+           int result=insertStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("insert failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;  
     }
 
     @Override

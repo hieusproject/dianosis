@@ -5,19 +5,21 @@
  */
 package entity;
 
+import java.sql.Date;
+
 /**
  *
  * @author AnNguyen
  */
 public class Rule {
     private int rule_id;
-    private String date_define;
+    private Date date_define;
     private int active;
 
     public Rule() {
     }
 
-    public Rule(int rule_id, String date_define, int active) {
+    public Rule(int rule_id, Date date_define, int active) {
         this.rule_id = rule_id;
         this.date_define = date_define;
         this.active = active;
@@ -31,11 +33,11 @@ public class Rule {
         this.rule_id = rule_id;
     }
 
-    public String getDate_define() {
+    public Date getDate_define() {
         return date_define;
     }
 
-    public void setDate_define(String date_define) {
+    public void setDate_define(Date date_define) {
         this.date_define = date_define;
     }
 

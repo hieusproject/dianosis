@@ -5,6 +5,7 @@
  */
 package repository;
 
+import entity.Examination;
 import entity.ExtraInfo;
 import entity.TestType;
 import java.sql.Connection;
@@ -38,9 +39,32 @@ public class ExtraInfoRepository implements RepositoryInterface{
     }
 
     @Override
-    public boolean save(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+     public boolean save(Object ob) {
+        try {
+            ExtraInfo exif= (ExtraInfo) ob;
+             String sqlString= "INSERT INTO `extra_info` (`father_career_id`,`divorce_status`,"
+                     + "`mother_career_id`,`monthly_income`,`height`,`weight`,`sex`,group`)"
+                     + " VALUES (?,?,?,?,?,?,?,?)";
+           PreparedStatement insertStatement= connection.prepareStatement(sqlString);
+           insertStatement.setInt(1,exif.getFather_career_id());
+           insertStatement.setInt(2,exif.getDivorce_status());
+           insertStatement.setInt(3,exif.getMother_career_id());
+           insertStatement.setInt(4,exif.getMonthly_income());
+           insertStatement.setFloat(5,exif.getHeight());
+           insertStatement.setFloat(6,exif.getWeight());
+           insertStatement.setInt(7,exif.getSex());
+           insertStatement.setInt(8,exif.getGroup());
+           int result=insertStatement.executeUpdate();
+          
+             if (result==0) {
+                    System.out.println("insert failed");
+                    return false;
+              } else {
+              return true; 
+                }
+        } catch (Exception e) {
+            return false;
+        }}
 
     @Override
     public boolean update(Object ob) {

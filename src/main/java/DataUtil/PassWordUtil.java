@@ -1,6 +1,4 @@
 package DataUtil;
-
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;

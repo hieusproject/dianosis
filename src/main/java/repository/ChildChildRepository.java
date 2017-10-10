@@ -7,6 +7,7 @@ package repository;
 
 import entity.ChildChild;
 import entity.TestType;
+import entity.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +38,29 @@ public class ChildChildRepository implements RepositoryInterface{
 
     @Override
     public boolean save(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       ChildChild c_child=(ChildChild) ob; 
+       try {  
+         
+           String sqlString= "INSERT INTO `chile_child`"
+                   + " (`similarity`, `c_id2`, )"
+                   + " VALUES (?,?)";
+           PreparedStatement insertStatement= connection.prepareStatement(sqlString);
+           insertStatement.setFloat(1,c_child.getSimilarity());
+           insertStatement.setInt(2,c_child.getC_id2());
+           int result=insertStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("insert failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;  
     }
 
     @Override

@@ -126,11 +126,62 @@ public class UserRepository implements RepositoryInterface{
     }
 
     public boolean update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    User user=(User) ob; 
+       try {  
+         
+           String sqlString= "UPDATE `user` SET" 
+                   + " `userName`=?, `password`=?, `fullName`=?, `address`=?, `phone`=?, `email`=?, `age`=?, `date_created`=?, `role`=?"
+                   + " WHERE `u_id`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setString(1,user.getUsername());
+           updateStatement.setString(2,user.getPassword());
+           updateStatement.setString(3, user.getFullname());
+           updateStatement.setString(4, user.getAddress());
+           updateStatement.setString(5, user.getPhone());
+           updateStatement.setString(6, user.getEmail());
+           updateStatement.setDate(7, user.getAge());
+           updateStatement.setDate(8, user.getDate_created());
+           updateStatement.setInt(9,user.getRole());
+           updateStatement.setInt(10,user.getU_id());
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
     }
 
+    
+    //lỡ xóa mẹ luôn cái user rồi, tự sữa đi
     public boolean deleteById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//       try {  
+//         
+//           String sqlString= "DELETE FROM  `user`" 
+//                   + " WHERE `u_id`=?";
+//           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+//           updateStatement.setString(1,id);
+//           int result=updateStatement.executeUpdate();
+//          
+//           if (result==0) {
+//               System.out.println("delete failed");
+//             return false;
+//               
+//             
+//         } else {
+//              return true; 
+//         }
+//       } catch (Exception e) {
+//           e.printStackTrace();
+//       }
+    return false;   
     }
 
     public ArrayList<Object> getAll() {
@@ -159,12 +210,14 @@ public class UserRepository implements RepositoryInterface{
         SimpleDateFormat format= new SimpleDateFormat("mm/dd/yyyy");
         java.util.Date date= format.parse(dateStr);
         java.util.Date currentDate= new java.util.Date();
-        User user= new User(0, "admin", "admin",
-                "Nguyễn Admin", "QN", "0976679753","adcm.edu@gmail",
+        User user= new User(1, "admin", "admin",
+                "Lê Văn Hậu", "QN", "0976679753","adcm.edu@gmail",
                 DataUtil.toSQLDATE(date), DataUtil.toSQLDATE(currentDate), 0);
         UserRepository uRepository= new UserRepository();
-//        System.out.println(uRepository.getAll());
-        User us= uRepository.getUserByInput("user01","aad415a73c4cef1ef94a5c00b2642b571a3e5494536328ad960db61889bd9368");
-        System.out.println(us.getFullname());
+////        System.out.println(uRepository.getAll());
+//        User us= uRepository.getUserByInput("user01","aad415a73c4cef1ef94a5c00b2642b571a3e5494536328ad960db61889bd9368");
+//        System.out.println(us.getFullname());
+        boolean us=uRepository.update(user);
+        System.out.println("update: "+us);
     }
 }
