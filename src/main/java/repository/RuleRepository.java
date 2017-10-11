@@ -7,6 +7,7 @@ package repository;
 
 import entity.Child;
 import entity.Examination;
+import entity.ExtraInfo;
 import entity.Rule;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -55,9 +56,35 @@ public class RuleRepository implements RepositoryInterface{
             return false;
         }}
 
-    @Override
+          @Override
     public boolean update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Rule rule=(Rule) ob; 
+       try {  
+         //`father_career_id`,`divorce_status`,"
+                  //   + "`mother_career_id`,`monthly_income`,`height`,`weight`,`sex`,group
+           String sqlString= "UPDATE `test_rule` SET" 
+                   + " `date_define`=?, `active`=?"
+                   + " WHERE `rule_id`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setDate(1,rule.getDate_define());
+           updateStatement.setInt(2,rule.getActive());
+           updateStatement.setInt(3,rule.getRule_id());
+         
+           
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
     }
 
     @Override

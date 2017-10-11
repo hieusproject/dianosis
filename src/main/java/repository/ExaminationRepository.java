@@ -5,6 +5,7 @@
  */
 package repository;
 
+import entity.CareerType;
 import entity.Child;
 import entity.Examination;
 import java.sql.Connection;
@@ -56,9 +57,36 @@ public class ExaminationRepository implements RepositoryInterface{
             return false;
         }}
 
-    @Override
+        @Override
     public boolean update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Examination exams=(Examination) ob; 
+       try {  
+         
+           String sqlString= "UPDATE `examination` SET" 
+                   + " `c_id`=?, `test_rule_id`=?"
+                   + " `exam_result`=?, `date`=?"
+                   + " WHERE `ex_id`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setInt(1,exams.getC_id());
+           updateStatement.setInt(2,exams.getTest_rule_id());
+           updateStatement.setString(3, exams.getExam_result());
+           updateStatement.setDate(4, exams.getDate());
+           updateStatement.setInt(5, exams.getEx_id());
+           
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
     }
 
     @Override

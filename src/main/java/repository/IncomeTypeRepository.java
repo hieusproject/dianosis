@@ -57,11 +57,35 @@ public class IncomeTypeRepository implements RepositoryInterface{
         }}
 
 
-    @Override
+           @Override
     public boolean update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    IncomeType incometype=(IncomeType) ob; 
+       try {  
+         //`father_career_id`,`divorce_status`,"
+                  //   + "`mother_career_id`,`monthly_income`,`height`,`weight`,`sex`,group
+           String sqlString= "UPDATE `imcome_type` SET" 
+                   + " `range`=?"
+                   + " WHERE `income_id`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setInt(1,incometype.getIncome_id());
+           updateStatement.setString(2,incometype.getRange());
 
+           
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
+    }
     @Override
     public boolean deleteById(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

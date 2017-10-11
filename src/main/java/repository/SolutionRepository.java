@@ -6,6 +6,7 @@
 package repository;
 
 import entity.Examination;
+import entity.ExtraInfo;
 import entity.Solution;
 import entity.TestType;
 import java.sql.Connection;
@@ -41,7 +42,8 @@ public class SolutionRepository implements  RepositoryInterface{
      public boolean save(Object ob) {
         try {
             Solution sl= (Solution) ob;
-             String sqlString= "INSERT INTO `solution` (`u_id`,`s_title`,`s_content`,`s_picture`,`date_created`) VALUES (?,?,?,?,?)";
+             String sqlString= "INSERT INTO `solution` (`u_id`,`s_title`,`s_content`,`s_picture`,"
+                     + "`date_created`) VALUES (?,?,?,?,?)";
            PreparedStatement insertStatement= connection.prepareStatement(sqlString);
            insertStatement.setInt(1,sl.getU_id());
            insertStatement.setString(2,sl.getS_title());
@@ -60,9 +62,37 @@ public class SolutionRepository implements  RepositoryInterface{
             return false;
         }}
 
-    @Override
+          @Override
     public boolean update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Solution solution=(Solution) ob; 
+       try {  
+           String sqlString= "UPDATE `solution` SET" 
+                   + " `u_id`=?, `s_title`=?"
+                   + " `s_content`=?, `s_picture`=?"
+                   + " `date_created`=?"
+                   + " WHERE `s_id`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setInt(1,solution.getU_id());
+           updateStatement.setString(2,solution.getS_title());
+           updateStatement.setString(3,solution.getS_content());
+           updateStatement.setString(4,solution.getS_picture());
+           updateStatement.setDate(5,solution.getDate_created());
+           updateStatement.setInt(6,solution.getS_id());
+           
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
     }
 
     @Override

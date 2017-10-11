@@ -6,6 +6,7 @@
 package repository;
 
 import entity.Examination;
+import entity.ExtraInfo;
 import entity.Solution;
 import entity.Test;
 import java.sql.Connection;
@@ -62,9 +63,36 @@ public class TestRepository implements RepositoryInterface {
         }}
 
 
-    @Override
+            @Override
     public boolean update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Test test=(Test) ob; 
+       try {  
+//INSERT INTO `test` (`type_id`,`ex_id`,`result_test`,`deleted`)"
+//                     + " VALUES (?,?,?,?)";
+           String sqlString= "UPDATE `test` SET" 
+                   + " `type_id`=?, `ex_id`=?"
+                   + " `result_test`=?, `deleted`=?"
+                   + " WHERE `test_id`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setInt(1,test.getType_id());
+           updateStatement.setInt(2,test.getEx_id());
+           updateStatement.setString(3,test.getResult_test());
+           updateStatement.setInt(4,test.getDeleted());
+           updateStatement.setFloat(5,test.getTest_id());
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
     }
 
     @Override

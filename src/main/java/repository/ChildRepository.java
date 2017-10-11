@@ -19,7 +19,8 @@ public class ChildRepository implements RepositoryInterface{
     public boolean save(Object ob) {
         try {
             Child child= (Child) ob;
-             String sqlString= "INSERT INTO `child`(`u_id`,`fullName`,`date_of_birth`,`father_name`,`mother_name`,`extra_info_id`,`date_created`,`deleted`) VALUES (?,?,?,?,?,?,?,?)";
+             String sqlString= "INSERT INTO `child`(`u_id`,`fullName`,`date_of_birth`,`father_name`,"
+                     + "`mother_name`,`extra_info_id`,`date_created`,`deleted`) VALUES (?,?,?,?,?,?,?,?)";
            PreparedStatement insertStatement= connection.prepareStatement(sqlString);
            insertStatement.setInt(1,child.getU_id());
            insertStatement.setString(2,child.getFullName());
@@ -41,8 +42,38 @@ public class ChildRepository implements RepositoryInterface{
             return false;
         }}
 
-    public boolean update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+   public boolean update(Object ob) {
+    Child childs=(Child) ob; 
+       try {  
+         
+           String sqlString= "UPDATE `child` SET" 
+                   + " `u_id`=?, `fullName`=?, `date_of_birth`=?, `father_name`=?, "
+                   + "`mother_name`=?, `extra_info_id`=?, `date_created`=?, `deleted`=?"
+                   + " WHERE `c_id`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setInt(1,childs.getU_id());
+           updateStatement.setString(2,childs.getFullName());
+           updateStatement.setDate(3, childs.getDate_of_birth());
+           updateStatement.setString(4, childs.getFather_name());
+           updateStatement.setString(5, childs.getMother_name());
+           updateStatement.setInt(6, childs.getExtra_infor_id());
+           updateStatement.setDate(7, childs.getDate_created());
+           updateStatement.setInt(8, childs.getDeleted());
+           updateStatement.setInt(9,childs.getC_id());
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
     }
 
     public boolean deleteById(String id) {
