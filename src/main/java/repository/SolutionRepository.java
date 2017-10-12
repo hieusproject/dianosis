@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -36,7 +38,29 @@ public class SolutionRepository implements  RepositoryInterface{
         }
         return solutions;
     }
-
+     public ArrayList<Map> getTopByc_id(int c_id) {
+        ArrayList<Map> result= new ArrayList<Map>();
+        try {
+            String getSQL="SELECT slt.s_title as title,slt.s_content as content ,likeview.likes as likes"
+                    + " FROM solution slt JOIN child_solution_recommend c_slt_rcm ON slt.s_id=c_slt_rcm.s_id  "
+                    + "Join likeview ON slt.s_id= likeview.s_id "
+                    + "WHERE c_id=? ORDER BY c_slt_rcm.rating DESC LIMIT 5";
+            PreparedStatement getST= connection.prepareStatement(getSQL);
+            getST.setInt(1, c_id);
+            ResultSet rs=getST.executeQuery();
+            while (rs.next()) {     
+                Map line= new HashMap();
+                line.put("title",rs.getString("title"));
+                line.put("content",rs.getString("content"));
+                line.put("likes",rs.getInt("likes"));
+                result.add(line);
+            }
+            
+        } catch (Exception e) {
+        }
+        return result;
+    }
+    
     @Override
      public boolean save(Object ob) {
         try {
