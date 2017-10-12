@@ -58,9 +58,37 @@ public class Rule_detailRepository implements RepositoryInterface{
             return false;
         }}
 
-    @Override
+           @Override
     public boolean update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Rule_Detail detail=(Rule_Detail) ob; 
+       try {  
+         //`father_career_id`,`divorce_status`,"
+                  //   + "`mother_career_id`,`monthly_income`,`height`,`weight`,`sex`,group
+           String sqlString= "UPDATE `Rule_Detail` SET" 
+                   + " `rule_id`=?, `test_type_id`=?"
+                   + " `level`=?"
+                   + " WHERE `detail_id`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setInt(1,detail.getRule_id());
+           updateStatement.setString(2,detail.getTest_type_id());
+           updateStatement.setInt(3,detail.getLevel());
+           updateStatement.setInt(4,detail.getDetail_id());
+         
+           
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
     }
 
     @Override

@@ -66,7 +66,31 @@ public class CareerTypeRepository implements RepositoryInterface{
 
     @Override
     public boolean update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    CareerType carrers=(CareerType) ob; 
+       try {  
+         
+           String sqlString= "UPDATE `carrer_type` SET" 
+                   + " `carrer_title`=?, `career_description`=?"
+                   + " WHERE `caree_id`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setString(1,carrers.getCarrer_title());
+           updateStatement.setString(2,carrers.getCareer_description());
+           updateStatement.setInt(3, carrers.getCaree_id());
+           
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
     }
 
     @Override

@@ -5,6 +5,7 @@
  */
 package repository;
 
+import entity.CareerType;
 import entity.ChildChild;
 import entity.TestType;
 import entity.User;
@@ -65,7 +66,31 @@ public class ChildChildRepository implements RepositoryInterface{
 
     @Override
     public boolean update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    ChildChild childs=(ChildChild) ob; 
+       try {  
+         
+           String sqlString= "UPDATE `chile_child` SET" 
+                   + " `similarity`=?, `c_id2`=?"
+                   + " WHERE `c_id1`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setFloat(1,childs.getSimilarity());
+           updateStatement.setInt(2,childs.getC_id2());
+           updateStatement.setInt(3, childs.getC_id1());
+           
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
     }
 
     @Override

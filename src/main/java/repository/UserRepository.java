@@ -130,7 +130,8 @@ public class UserRepository implements RepositoryInterface{
        try {  
          
            String sqlString= "UPDATE `user` SET" 
-                   + " `userName`=?, `password`=?, `fullName`=?, `address`=?, `phone`=?, `email`=?, `age`=?, `date_created`=?, `role`=?"
+                   + " `userName`=?, `password`=?, `fullName`=?, `address`=?, "
+                   + "`phone`=?, `email`=?, `age`=?, `date_created`=?, `role`=?"
                    + " WHERE `u_id`=?";
            PreparedStatement updateStatement= connection.prepareStatement(sqlString);
            updateStatement.setString(1,user.getUsername());

@@ -5,6 +5,8 @@
  */
 package repository;
 
+import entity.CareerType;
+import entity.ExtraInfo;
 import entity.Token;
 import entity.User;
 import java.sql.Connection;
@@ -40,17 +42,55 @@ public class TokenRepository implements RepositoryInterface{
         
     }
 
+        @Override
     public boolean update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Token token=(Token) ob; 
+       try {  
+         //`fINSERT INTO `token`(`u_id`, `token`) VALUES (?,?)";
+           String sqlString= "UPDATE `token` SET" 
+                   + " `token`=?"
+                   + " WHERE `u_id`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setString(1,token.getToken_code());
+           updateStatement.setInt(2,token.getToken_id());
+          
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
     }
 
     public boolean deleteById(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+     @Override
     public ArrayList<Object> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Object> tokens= new ArrayList<Object>();
+        try {
+            String getSQL="SELECT * FROM `token`";
+            PreparedStatement getST= connection.prepareStatement(getSQL);
+            ResultSet rs=getST.executeQuery();
+            while (rs.next()) {     
+                Token token= new Token(rs.getInt("tk_id"), rs.getInt("u_id"),rs.getString("token"));
+                tokens.add(token);
+            }
+            
+        } catch (Exception e) {
+        }
+        return tokens;
     }
+
     public Token getTokenByCode(String hashCode){
      try {
       

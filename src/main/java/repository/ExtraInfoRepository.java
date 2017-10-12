@@ -66,9 +66,43 @@ public class ExtraInfoRepository implements RepositoryInterface{
             return false;
         }}
 
-    @Override
+        @Override
     public boolean update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    ExtraInfo extrainfo=(ExtraInfo) ob; 
+       try {  
+         //`father_career_id`,`divorce_status`,"
+                  //   + "`mother_career_id`,`monthly_income`,`height`,`weight`,`sex`,group
+           String sqlString= "UPDATE `extra_info` SET" 
+                   + " `father_career_id`=?, `divorce_status`=?"
+                   + " `mother_career_id`=?, `monthly_income`=?"
+                   + " `height`=?, `weight`=?"
+                   + " `sex`=?, `group`=?"
+                   + " WHERE `c_id`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setInt(1,extrainfo.getFather_career_id());
+           updateStatement.setInt(2,extrainfo.getDivorce_status());
+           updateStatement.setInt(3,extrainfo.getMother_career_id());
+           updateStatement.setInt(4,extrainfo.getMonthly_income());
+           updateStatement.setFloat(5,extrainfo.getHeight());
+           updateStatement.setFloat(6,extrainfo.getWeight());
+           updateStatement.setInt(7, extrainfo.getSex());
+           updateStatement.setInt(8, extrainfo.getGroup());
+           updateStatement.setInt(9, extrainfo.getC_id());
+           
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
     }
 
     @Override
