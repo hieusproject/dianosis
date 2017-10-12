@@ -77,7 +77,28 @@ public class ChildRepository implements RepositoryInterface{
     }
 
     public boolean deleteById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       try {  
+         
+           String sqlString= "UPDATE `child` SET" 
+                   + "`deleted`=?"
+                   + " WHERE `c_id`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setString(1, "0");
+           updateStatement.setString(2,id);
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
     }
 
     public ArrayList<Object> getAll() {

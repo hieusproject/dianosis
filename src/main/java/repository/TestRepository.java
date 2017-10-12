@@ -67,8 +67,6 @@ public class TestRepository implements RepositoryInterface {
     public boolean update(Object ob) {
     Test test=(Test) ob; 
        try {  
-//INSERT INTO `test` (`type_id`,`ex_id`,`result_test`,`deleted`)"
-//                     + " VALUES (?,?,?,?)";
            String sqlString= "UPDATE `test` SET" 
                    + " `type_id`=?, `ex_id`=?"
                    + " `result_test`=?, `deleted`=?"
@@ -97,7 +95,27 @@ public class TestRepository implements RepositoryInterface {
 
     @Override
     public boolean deleteById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {  
+           String sqlString= "UPDATE `test` SET" 
+                   + " `deleted`=?"
+                   + " WHERE `test_id`=?";
+           PreparedStatement updateStatement= connection.prepareStatement(sqlString);
+           updateStatement.setString(1,"0");
+           updateStatement.setString(2,id);
+           int result=updateStatement.executeUpdate();
+          
+           if (result==0) {
+               System.out.println("update failed");
+             return false;
+               
+             
+         } else {
+              return true; 
+         }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    return false;      
     }
 
    
