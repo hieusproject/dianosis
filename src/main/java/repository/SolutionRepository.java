@@ -42,26 +42,91 @@ public class SolutionRepository implements  RepositoryInterface{
      public ArrayList<Map> getTopByc_id(int c_id) {
         ArrayList<Map> result= new ArrayList<Map>();
         try {
-            String getSQL="SELECT slt.s_title as title,slt.s_content as content ,likeview.likes as likes"
+            String getSQL="SELECT slt.s_id as s_id,slt.s_title as title,slt.s_content as content ,likeview.likes as likes"
                     + " FROM solution slt JOIN child_solution_recommend c_slt_rcm ON slt.s_id=c_slt_rcm.s_id  "
                     + "Join likeview ON slt.s_id= likeview.s_id "
                     + "WHERE c_id=? ORDER BY c_slt_rcm.rating DESC LIMIT 5";
             PreparedStatement getST= connection.prepareStatement(getSQL);
             getST.setInt(1, c_id);
             ResultSet rs=getST.executeQuery();
+             System.out.println("get sucsess");
             while (rs.next()) {     
                 Map line= new HashMap();
                 line.put("title",rs.getString("title"));
                 line.put("content",rs.getString("content"));
                 line.put("likes",rs.getInt("likes"));
-                result.add(line);
+                Map solution= new HashMap();
+                solution.put(Integer.toString(rs.getInt("s_id")), line);
+                result.add(solution);
             }
             
         } catch (Exception e) {
+             e.printStackTrace();
         }
         return result;
     }
-    
+      public ArrayList<Map> getTopbyPage(int pageIndex) {
+         int begin= (pageIndex-1)*10;
+         int end=pageIndex*10-1;
+        ArrayList<Map> result= new ArrayList<Map>();
+        
+        try {
+            String getSQL="SELECT solution.s_id as s_id,s_title,s_content,likeview.likes as likes"
+                    + " FROM `solution` JOIN likeview  ON solution.s_id=likeview.s_id "
+                    + " GROUP BY solution.s_id "
+                    + " ORDER BY likes DESC  "
+                    + " LIMIT ?,? ";
+            PreparedStatement getST= connection.prepareStatement(getSQL);
+            getST.setInt(1, begin);
+            getST.setInt(2, end);
+            ResultSet rs=getST.executeQuery();
+             System.out.println("get sucsess");
+            while (rs.next()) {     
+                Map line= new HashMap();
+                line.put("title",rs.getString("title"));
+                line.put("content",rs.getString("content"));
+                line.put("likes",rs.getInt("likes"));
+                Map solution= new HashMap();
+                solution.put(Integer.toString(rs.getInt("s_id")), line);
+                result.add(solution);
+            }
+            
+        } catch (Exception e) {
+             e.printStackTrace();
+        }
+        return result;
+    }
+       public ArrayList<Map> getRatedSolution(int c_id) {
+         
+        ArrayList<Map> result= new ArrayList<Map>();
+        
+        try {
+            String getSQL="SELECT solution.s_id as s_id,s_title,s_content,likeview.likes as likes"
+                    + " FROM solution JOIN child_solution"
+                    + " ON solution.s_id= child_solution.s_id "
+                    + "JOIN likeview "
+                    + "ON solution.s_id=likeview.s_id  "
+                    + " WHERE child_solution.c_id=  ? ";
+            PreparedStatement getST= connection.prepareStatement(getSQL);
+            getST.setInt(1, c_id);
+            ResultSet rs=getST.executeQuery();
+             System.out.println("get sucsess");
+            while (rs.next()) {  
+            
+                Map line= new HashMap();
+                line.put("title",rs.getString("title"));
+                line.put("content",rs.getString("content"));
+                line.put("likes",rs.getInt("likes"));
+                Map solution= new HashMap();
+                solution.put(Integer.toString(rs.getInt("s_id")), line);
+                result.add(solution);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
     @Override
      public boolean save(Object ob) {
         try {
@@ -122,5 +187,10 @@ public class SolutionRepository implements  RepositoryInterface{
     @Override
     public boolean deleteById(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public static void main(String[] args) {
+        SolutionRepository soRepository= new SolutionRepository();
+        soRepository.getTopbyPage(1);
     }
 }
