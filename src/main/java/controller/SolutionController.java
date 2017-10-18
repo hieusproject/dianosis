@@ -5,7 +5,10 @@
  */
 package controller;
 
+import entity.ChildSolution;
+import entity.Solution;
 import entity.Token;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +33,7 @@ public class SolutionController {
         Map respone= new HashMap();
         int c_id=Integer.parseInt(c_idStr);
         Token tokenOb = tokenRepostirory.getTokenByCode(token);
-        if (token==null) {
+        if (tokenOb==null) {
             respone.put("status","0"); 
         }
         else{
@@ -47,7 +50,7 @@ public class SolutionController {
         Map respone= new HashMap();
         int pageIndex=Integer.parseInt(page);
         Token tokenOb = tokenRepostirory.getTokenByCode(token);
-        if (token==null) {
+        if (tokenOb==null) {
             respone.put("status","0"); 
         }
         else{
@@ -64,7 +67,7 @@ public class SolutionController {
         Map respone= new HashMap();
         int c_id=Integer.parseInt(c_idStr);
         Token tokenOb = tokenRepostirory.getTokenByCode(token);
-        if (token==null) {
+        if (tokenOb==null) {
             respone.put("status","0"); 
         }
         else{
@@ -76,5 +79,25 @@ public class SolutionController {
         return respone;
     }
     
-    
+    @RequestMapping(value = "/new_solution",method = RequestMethod.POST)
+    public Map newSolutionForChild(@RequestParam(name = "token") String token,
+                                    @RequestParam(name = "c_id") String c_idStr,
+                                    @RequestParam(name = "title") String title,
+                                    @RequestParam(name = "content")String content,
+                                    @RequestParam(name = "rating")String rating){
+    Map respone= new HashMap();
+    int c_id=Integer.parseInt(c_idStr);
+        Token tokenOb = tokenRepostirory.getTokenByCode(token);
+        if (tokenOb==null) {
+            respone.put("status","0"); 
+        }
+        else{
+            respone.put("status","1");
+            Date date_created = new Date();
+            Solution solution = new Solution(0, c_id, title, content, title, DataUtil.DataUtil.toSQLDATE(date_created));
+            solutionRepository.save(solution);
+            ChildSolution childSolution = new ChildSolution(c_id, c_id, c_id);
+        }
+       return respone; 
+    }
 }

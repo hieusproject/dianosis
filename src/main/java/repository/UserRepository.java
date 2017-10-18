@@ -91,6 +91,28 @@ public class UserRepository implements RepositoryInterface{
     return false;
     
     }
+         public User getUserbyUserName(String username){
+     try {
+      
+           String sqlString= "SELECT * FROM `user` WHERE userName= ?";
+           PreparedStatement getStatement= connection.prepareStatement(sqlString);
+                        getStatement.setString(1,username);     
+           ResultSet rs= getStatement.executeQuery();
+           
+             while (rs.next()) {                 
+                 User user= new User(rs.getInt("u_id"), rs.getString("username"),
+                         rs.getString("password"), rs.getString("fullName"),
+                         rs.getString("address"), rs.getString("phone"),
+                         rs.getString("email"), rs.getDate("age"),
+                         rs.getDate("date_created"),rs.getInt("role"));
+                 return user;
+             }
+       } catch (Exception e) {
+           return null;
+       }
+    return null;
+    
+    }
 
     public boolean save(Object ob) {
        User user=(User) ob; 

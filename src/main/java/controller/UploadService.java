@@ -7,16 +7,23 @@ package controller;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
+import entity.Token;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import repository.ChildChildRepository;
+import repository.ExtraInfoRepository;
+import repository.TokenRepository;
 
 /**
  *
@@ -24,24 +31,45 @@ import javax.ws.rs.core.Response;
  */
 @Path("/file")
 public class UploadService {
+    String root= "C:\\Users\\AnNguyen\\Documents\\NetBeansProjects"
+                        + "\\Diagnosis_services\\src\\main\\webapp\\files\\";
+    TokenRepository tokenRepository=new TokenRepository();
+    ChildChildRepository childRepository = new ChildChildRepository();
+    ExtraInfoRepository extraInfoRepository= new ExtraInfoRepository();
     @POST
-    @Path("/upload")
+    @Path("/newChild")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadFile(
-		@FormDataParam("file") InputStream uploadedInputStream,
-		@FormDataParam("file") FormDataContentDisposition fileDetail,
-                @FormDataParam ("typename") String typename) {
-                System.out.println("uploading");
-		String uploadedFileLocation = "C:\\Users\\AnNguyen\\Documents\\NetBeansProjects"
-                        + "\\Diagnosis_services\\src\\main\\webapp\\WEB-INF\\files\\" + fileDetail.getFileName();
+    public Map uploadFile(
+		@FormDataParam ("file") InputStream uploadedInputStream,
+		@FormDataParam ("file") FormDataContentDisposition fileDetail,
+                @FormDataParam ("token") String token,
+                @FormDataParam ("fullname") String fullname,
+                @FormDataParam ("date_of_birth") String date_of_birth,
+                @FormDataParam ("father") String father,
+                @FormDataParam ("mother") String mother,
+                @FormDataParam ("father_career") String father_career,
+                @FormDataParam ("mother_career") String mother_career,
+                @FormDataParam ("monthly_income") String monthly_income,
+                @FormDataParam ("child_sex") String child_sex
+                                    ) {
+                Map respone = new HashMap();
+                Token tokenOb = tokenRepository.getTokenByCode(token);
+                String uploadedFileLocation = root+ fileDetail.getFileName();
+                String fileName= fileDetail.getFileName();
+                if (token==null) {
+                    respone.put("status","0");
+                } else {
+                    writeToFile(uploadedInputStream, uploadedFileLocation);
+                    
+                }
+		
 
 		// save it
-		writeToFile(uploadedInputStream, uploadedFileLocation);
+		
+                
+		
 
-		String output = "File uploaded to : " + uploadedFileLocation;
-
-		return Response.status(200).entity(output).build();
-
+                return null;
 	}
 
 	// save uploaded file to new location

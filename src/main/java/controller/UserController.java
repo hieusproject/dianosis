@@ -29,24 +29,33 @@ import org.xml.sax.SAXException;
 import repository.ChildRepository;
 import DataUtil.PassWordUtil;
 import entity.Token;
-import java.sql.Date;
+import java.net.URLDecoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.json.simple.parser.ParseException;
+import org.springframework.http.HttpRequest;
+import org.springframework.ui.Model;
 import repository.TokenRepository;
 import repository.UserRepository;
+import DataUtil.DataUtil;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.simple.JSONObject;
 
 /**
  *
  * @author AnNguyen
  */
 @RestController
-@RequestMapping(value = "/ManageUser")
+//@RequestMapping(value = "/ManageUser")
 public class UserController {
     private static UserRepository userRepository= new UserRepository();
     private static ChildRepository childRepository=new ChildRepository();
     private static TokenRepository tokenRepository= new TokenRepository();
     @RequestMapping(value = "/hello",method = RequestMethod.GET)
     public Object sayHello() throws ParserConfigurationException, SAXException, IOException{
+    String jsonfile="";
     File xmlfile=
     new File("C:\\Users\\AnNguyen\\Documents\\NetBeansProjects\\Diagnosis_services\\src\\main\\webapp\\WEB-INF\\files\\xmlfile.xml");
     DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -56,55 +65,64 @@ public class UserController {
     
     return doc;
     }
+    @RequestMapping(value = "/getfile",method = RequestMethod.GET)
+    public String getFile() throws IOException, ParseException {
+       String src="C:/Users/AnNguyen/Documents/NetBeansProjects/Diagnosis_services/src/main/webapp/json.txt";
+        JSONObject jsonObj=DataUtil.readJsonObject(src);
+        String respone=JSONObject.toJSONString(jsonObj);
+        return respone;
+    }
+    
+    
     @RequestMapping(value = "/getUsers",method = RequestMethod.GET)
     public ArrayList <Object> getAllUser(){
             ArrayList<Object> users= userRepository.getAll();
             return users;
     }
+
     @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public Map saveNewUser(@RequestParam(name="username") String username,@RequestParam(name="password") String password,
-                                @RequestParam(name="fullname") String fullname, @RequestParam(name="address") String address,
-                                @RequestParam(name="phone") String phone, @RequestParam(name="email") String email,
-                                @RequestParam(name="age") String ageStr, @RequestParam(name="date_created") String date_createdStr,
-                                @RequestParam(name="role") String role
-                                ) throws NoSuchAlgorithmException{
+    public Map saveNewUser(@RequestBody JSONObject user
+                                ) throws NoSuchAlgorithmException {
+        boolean success=false;
         String error="";
         Map respone= new HashMap();
-        Date age=null;
-        Date date_create=null;
-        boolean success=false;
+        Date date_created= new Date();
+        String username= (String) user.get("username");
+        String password= (String) user.get("password");
+        String fullname= (String) user.get("fullname");
+        String address= (String) user.get("address");
+        String phone= (String) user.get("phone");
+        String email= (String) user.get("email");
+        String age= (String) user.get("age");
+        Date date_of_birth = null;
         try {
-            age= DataUtil.DataUtil.toSQLDATE(DataUtil.DataUtil.StringtoDate(ageStr));
-            date_create=DataUtil.DataUtil.toSQLDATE(DataUtil.DataUtil.StringtoDate(date_createdStr));
-            success=true;
-        } catch (Exception e) {
-            error="Dinh dang ngay khong dung";
-            success=false;
+            date_of_birth = DataUtil.StringtoDate(age);
+        } catch (java.text.ParseException ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        User userObj= new User(0, username, password,
+                fullname, address, phone, email,
+                DataUtil.toSQLDATE(date_of_birth), DataUtil.toSQLDATE(date_created), 2);
         if (userRepository.isExist(username)) {
+            error="This username already existed";
             success=false;
-            error="User nay da ton tai";
+        }else{
+            success=userRepository.save(userObj);
+            if (!success) {
+                error="Can't create this user ";
+            }
         }
-        int u_id=0;
         if (success) {
-              User newUser= new User(0, username, password, fullname, address, phone, email, age, date_create, 0);
-              success= userRepository.save(newUser);
-              newUser= userRepository.getUserByInput(username, password);
-              u_id= newUser.getU_id();
-        }
-      
-        if (success) {
-            String newToken= DataUtil.DataUtil.newTokenforUser(u_id);
-            Token token= new Token(0, u_id, newToken);
+            User newUser= userRepository.getUserbyUserName(username);
+            String newToken= DataUtil.newTokenforUser(newUser.getU_id());
+            Token token= new Token(0,newUser.getU_id() , newToken);
             tokenRepository.save(token);
             respone.put("status", "1");
             respone.put("token", newToken);
         } else {
             respone.put("status", "0");
-            respone.put("fail_message", error);
+            respone.put("failed_message", error);
         }
-        
-          
        return respone; 
     }
     @RequestMapping(value = "/getUserByinput",method = RequestMethod.POST)
@@ -114,11 +132,25 @@ public class UserController {
          User user=userRepository.getUserByInput(username, password);
          return user;   
     }
-    @RequestMapping(value = "/getChildsOfUser",method = RequestMethod.GET)
-    public ArrayList<Child> getChildsOfUser(@RequestParam(name="u_id") String u_id 
+    @RequestMapping(value = "/getchildren",method = RequestMethod.GET)
+    public Map getChildsOfUser(@RequestParam(name="token") String token 
                                ) throws NoSuchAlgorithmException{
-         ArrayList<Child> childs= childRepository.getChildsOfUser(Integer.parseInt(u_id));
-         return childs;   
+        Map resspone= new HashMap();
+        Token tokenOb = tokenRepository.getTokenByCode(token);
+       
+        if (token==null) {
+            resspone.put("status","0");
+        } else {
+              ArrayList<Map> childs= childRepository.getChildsOfUser(tokenOb.getU_id());
+              resspone.put("status","1");
+              resspone.put("children", childs);
+        }
+        
+       return resspone;
+          
     }
-    
+    public static void main(String[] args) {
+       
+        System.out.println("controller.UserController.main()");
+    }
 }

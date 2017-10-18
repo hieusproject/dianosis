@@ -21,19 +21,21 @@ public class Child {
     private int extra_infor_id;
     private Date date_created;
     private int deleted;
+    private String image_url;
     public Child() {
     }
 
-    public Child(int c_id, int u_id, String fullName, Date date_of_birth, String father_name, String mother_name,  int extra_infor_id, Date date_created,int deleted) {
+    public Child(int c_id, int u_id, String fullName, Date date_of_birth, String father_name, String mother_name, int extra_infor_id, Date date_created, int deleted, String image_url) {
         this.c_id = c_id;
         this.u_id = u_id;
         this.fullName = fullName;
         this.date_of_birth = date_of_birth;
         this.father_name = father_name;
         this.mother_name = mother_name;
-        this.deleted = deleted;
         this.extra_infor_id = extra_infor_id;
         this.date_created = date_created;
+        this.deleted = deleted;
+        this.image_url = image_url;
     }
 
     public int getC_id() {
@@ -84,14 +86,6 @@ public class Child {
         this.mother_name = mother_name;
     }
 
-    public int getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(int deleted) {
-        this.deleted = deleted;
-    }
-
     public int getExtra_infor_id() {
         return extra_infor_id;
     }
@@ -108,6 +102,23 @@ public class Child {
         this.date_created = date_created;
     }
 
+    public int getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
+    }
+
+    public String getImageURL() {
+        return image_url;
+    }
+
+    public void setImageURL(String image_url) {
+        this.image_url = image_url;
+    }
+
+    
     
    
   

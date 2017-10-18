@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChildRepository implements RepositoryInterface{
     private static Connection connection= Conector.getConnection();
@@ -20,7 +22,7 @@ public class ChildRepository implements RepositoryInterface{
         try {
             Child child= (Child) ob;
              String sqlString= "INSERT INTO `child`(`u_id`,`fullName`,`date_of_birth`,`father_name`,"
-                     + "`mother_name`,`extra_info_id`,`date_created`,`deleted`) VALUES (?,?,?,?,?,?,?,?)";
+                     + "`mother_name`,`extra_info_id`,`date_created`,`deleted`,`image_url`) VALUES (?,?,?,?,?,?,?,?,?)";
            PreparedStatement insertStatement= connection.prepareStatement(sqlString);
            insertStatement.setInt(1,child.getU_id());
            insertStatement.setString(2,child.getFullName());
@@ -30,6 +32,7 @@ public class ChildRepository implements RepositoryInterface{
            insertStatement.setInt(6,child.getExtra_infor_id());
            insertStatement.setDate(7,child.getDate_created());
            insertStatement.setInt(8,child.getDeleted());
+           insertStatement.setString(9,child.getImageURL());
            int result=insertStatement.executeUpdate();
           
              if (result==0) {
@@ -48,7 +51,7 @@ public class ChildRepository implements RepositoryInterface{
          
            String sqlString= "UPDATE `child` SET" 
                    + " `u_id`=?, `fullName`=?, `date_of_birth`=?, `father_name`=?, "
-                   + "`mother_name`=?, `extra_info_id`=?, `date_created`=?, `deleted`=?"
+                   + "`mother_name`=?, `extra_info_id`=?, `date_created`=?, `deleted`=? `image_url`"
                    + " WHERE `c_id`=?";
            PreparedStatement updateStatement= connection.prepareStatement(sqlString);
            updateStatement.setInt(1,childs.getU_id());
@@ -59,7 +62,8 @@ public class ChildRepository implements RepositoryInterface{
            updateStatement.setInt(6, childs.getExtra_infor_id());
            updateStatement.setDate(7, childs.getDate_created());
            updateStatement.setInt(8, childs.getDeleted());
-           updateStatement.setInt(9,childs.getC_id());
+           updateStatement.setString(9,childs.getImageURL());
+           updateStatement.setInt(10,childs.getC_id());
            int result=updateStatement.executeUpdate();
           
            if (result==0) {
@@ -111,7 +115,7 @@ public class ChildRepository implements RepositoryInterface{
               
                 Child child= new Child(rs.getInt("c_id"), rs.getInt("u_id"), rs.getString("fullName"), 
                         rs.getDate("date_of_birth"), rs.getString("father_name"), rs.getString("mother_name"),
-                        rs.getInt("extra_info_id"), rs.getDate("date_created"), rs.getInt("deleted"));
+                        rs.getInt("extra_info_id"), rs.getDate("date_created"), rs.getInt("deleted"),rs.getString("image_url"));
               childs.add(child);
             }
             
@@ -119,19 +123,23 @@ public class ChildRepository implements RepositoryInterface{
         }
         return childs;
     }
-    public ArrayList<Child> getChildsOfUser(int id) {
-        ArrayList<Child> childs= new ArrayList<Child>();
+    public ArrayList<Map> getChildsOfUser(int id) {
+        ArrayList<Map> childs= new ArrayList<Map>();
         try {
             String getSQL="SELECT * FROM `child` WHERE u_id=?";
             PreparedStatement getST= connection.prepareStatement(getSQL);
             getST.setInt(1, id);
             ResultSet rs=getST.executeQuery();
             while (rs.next()) {      
-              
-                Child child= new Child(rs.getInt("c_id"), rs.getInt("u_id"), rs.getString("fullName"), 
-                        rs.getDate("date_of_birth"), rs.getString("father_name"), rs.getString("mother_name"),
-                        rs.getInt("extra_info_id"), rs.getDate("date_created"), rs.getInt("deleted"));
-              childs.add(child);
+                Map object= new HashMap();
+                    object.put("name", rs.getString("fullName"));
+                    object.put("date_of_birth", rs.getDate("date_of_birth"));
+                    object.put("father", rs.getString("father_name"));
+                    object.put("mother", rs.getString("mother_name"));
+                  
+                Map child= new HashMap();
+                child.put(Integer.toString(rs.getInt("c_id")),object);
+                childs.add(child);
             }
             
         } catch (Exception e) {
@@ -140,7 +148,8 @@ public class ChildRepository implements RepositoryInterface{
     }
     
     public static void main(String[] args) {
-       int size= new ChildRepository().getChildsOfUser(2).size();
-        System.out.println(Integer.toString(size));
+       
+        Map child= new ChildRepository().getChildsOfUser(2).get(0);
+        System.out.println(child);
     }
 }

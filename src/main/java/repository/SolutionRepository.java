@@ -83,8 +83,8 @@ public class SolutionRepository implements  RepositoryInterface{
              System.out.println("get sucsess");
             while (rs.next()) {     
                 Map line= new HashMap();
-                line.put("title",rs.getString("title"));
-                line.put("content",rs.getString("content"));
+                line.put("title",rs.getString("s_title"));
+                line.put("content",rs.getString("s_content"));
                 line.put("likes",rs.getInt("likes"));
                 Map solution= new HashMap();
                 solution.put(Integer.toString(rs.getInt("s_id")), line);
@@ -114,8 +114,8 @@ public class SolutionRepository implements  RepositoryInterface{
             while (rs.next()) {  
             
                 Map line= new HashMap();
-                line.put("title",rs.getString("title"));
-                line.put("content",rs.getString("content"));
+                line.put("title",rs.getString("s_title"));
+                line.put("content",rs.getString("s_content"));
                 line.put("likes",rs.getInt("likes"));
                 Map solution= new HashMap();
                 solution.put(Integer.toString(rs.getInt("s_id")), line);

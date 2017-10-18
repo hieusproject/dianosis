@@ -23,11 +23,11 @@ public class CareerTypeRepository implements RepositoryInterface{
     public ArrayList<Object> getAll() {
         ArrayList<Object> career_types= new ArrayList<Object>();
         try {
-            String getSQL="SELECT * FROM `carrer_type`";
+            String getSQL="SELECT * FROM `career_type`";
             PreparedStatement getST= connection.prepareStatement(getSQL);
             ResultSet rs=getST.executeQuery();
             while (rs.next()) {     
-                CareerType career_type= new CareerType(rs.getInt("caree_id"), rs.getString("carrer_title"),rs.getString("career_description"));
+                CareerType career_type= new CareerType(rs.getInt("career_id"), rs.getString("career_title"),rs.getString("career_description"));
                 career_types.add(career_type);
             }
             
@@ -96,5 +96,9 @@ public class CareerTypeRepository implements RepositoryInterface{
     @Override
     public boolean deleteById(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    public static void main(String[] args) {
+        int size=new  CareerTypeRepository().getAll().size();
+        System.out.println(size);
     }
 }

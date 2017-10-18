@@ -24,7 +24,7 @@
 
 	<servlet-mapping>
 		<servlet-name>jersey-serlvet</servlet-name>
-		<url-pattern>/rest/*</url-pattern>
+		<url-pattern>/upload/*</url-pattern>
 	</servlet-mapping>
     <servlet>
         <servlet-name>spring</servlet-name>

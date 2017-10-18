@@ -13,14 +13,16 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <form action="rest/file/upload" method="post" enctype="multipart/form-data">
+        <form action="upload/file/upload" method="post" enctype="multipart/form-data">
 
-	   <p>
+	
 		Select a file : 
-                <input type="file" name="file" accept="file/xml" />
-	   </p>
-
-	   <input type="submit" value="Upload It" />
+                <input type="file" name="file" accept="image/jpeg" /><br>
+	  
+    
+                <input type="text" name="typename"/><br>
+          
+	   <input type="submit" value="Upload It" /><br>
 	</form>
     </body>
 </html>

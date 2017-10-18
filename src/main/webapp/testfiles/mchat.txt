@@ -1,0 +1,167 @@
+﻿{
+  "Thang M-CHAT": {
+    "question_list": [
+      {
+	"question": "Con bạn có thích được lắc lư hoặc nâng lên hạ xuống trên đầu gối của bạn không?",
+        "options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có chú ý đến các trẻ khác không?",
+        "options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có thích leo trèo không? (Leo cầu thang chẳng hạn)",
+        "options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có thích chơi trốn tìm, ú òa không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có bao giờ chơi giả vờ, như: vờ gọi điện thoại hoặc săn sóc búp bê hoặc giả vờ làm cái gì đó không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có bao giờ dùng ngón tay trỏ của bé chỉ vào một thứ gì đó để đòi (vòi) không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có bao giờ dùng ngón tay trỏ của bé để chỉ một thứ gì đó để tỏ sự quan tâm không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có biết cách chơi với các đồ vật nhỏ như xe, các khối đồ chơi v.v… (mà không chỉ bỏ đồ chơi vào miệng, nghịch vớ vẫn hoặc thả rơi đồ chơi)?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có bao giờ đem một vật gì đó đến cho bạn để chỉ cho bạn về vật đó không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có bao giờ nhìn vào mắt bạn hơn 1 hoặc 2 giây không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có bao giờ tỏ vẻ quá nhạy cảm với tiếng động không? (ví dụ: bịt tai lại)",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có bao giờ cười khi thấy mặt bạn hoặc khi bạn cười với bé không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có bắt chước bạn không? (Ví dụ làm bộ nhăn mặt/vỗ tay/…, con bạn có bắt chước bạn không?)",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có đáp ứng với tên của bé khi bạn gọi không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Nếu bạn chỉ có một thứ đồ chơi nào đó trong phòng, bé có nhìn vào nó không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có đi được không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có nhìn vào vật mà bạn đang nhìn không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có làm những cử động ngón tay bất thường gần mặt của bé không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có bắt bạn phải chú ý vào hoạt động của bé không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Có khi nào bạn băn khoăn là con mình có thể bị điếc không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có hiểu những điều người khác nói không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có bao giờ nhìn chăm chăm vào một vật gì đó hoặc đi thơ thẩn mà không có mục đích gì không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      },
+      {
+	"question": "Con bạn có nhìn vào mặt bạn để xem phản ứng của bạn khi đối diện với một vật nào đó không quen thuộc với bé không?",
+	"options": [
+          {"option" : "Có"},
+          {"option": "Không"}
+        ]
+      }
+    ]
+  }
+}
