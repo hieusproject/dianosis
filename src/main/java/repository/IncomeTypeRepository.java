@@ -23,7 +23,7 @@ public class IncomeTypeRepository implements RepositoryInterface{
     public ArrayList<Object> getAll() {
         ArrayList<Object> imcome_types= new ArrayList<Object>();
         try {
-            String getSQL="SELECT * FROM `imcome_type`";
+            String getSQL="SELECT * FROM `income_type`";
             PreparedStatement getST= connection.prepareStatement(getSQL);
             ResultSet rs=getST.executeQuery();
             while (rs.next()) {     
@@ -32,6 +32,7 @@ public class IncomeTypeRepository implements RepositoryInterface{
             }
             
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return imcome_types;
     }
@@ -89,5 +90,9 @@ public class IncomeTypeRepository implements RepositoryInterface{
     @Override
     public boolean deleteById(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    public static void main(String[] args) {
+        int size= new IncomeTypeRepository().getAll().size();
+        System.out.println(size);
     }
 }

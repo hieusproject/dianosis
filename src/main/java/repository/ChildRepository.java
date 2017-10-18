@@ -132,14 +132,12 @@ public class ChildRepository implements RepositoryInterface{
             ResultSet rs=getST.executeQuery();
             while (rs.next()) {      
                 Map object= new HashMap();
+                    object.put("c_id", Integer.toString(rs.getInt("c_id")));
                     object.put("name", rs.getString("fullName"));
                     object.put("date_of_birth", rs.getDate("date_of_birth"));
                     object.put("father", rs.getString("father_name"));
                     object.put("mother", rs.getString("mother_name"));
-                  
-                Map child= new HashMap();
-                child.put(Integer.toString(rs.getInt("c_id")),object);
-                childs.add(child);
+                childs.add(object);
             }
             
         } catch (Exception e) {
