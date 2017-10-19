@@ -97,4 +97,8 @@ public class CareerTypeRepository implements RepositoryInterface{
     public boolean deleteById(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    public static void main(String[] args) {
+        int size=new  CareerTypeRepository().getAll().size();
+        System.out.println(size);
+    }
 }
