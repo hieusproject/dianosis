@@ -5,9 +5,8 @@
  */
 package repository;
 
-import entity.CareerType;
-import entity.TestType;
-import entity.User;
+import entity.ChildChild;
+import entity.SolutionLike;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,37 +16,35 @@ import java.util.ArrayList;
  *
  * @author VanHau
  */
-public class CareerTypeRepository implements RepositoryInterface{
-    private static Connection connection= Conector.getConnection();
+public class SolutionLikeRepository implements RepositoryInterface{
+        private static Connection connection= Conector.getConnection();
      @Override
     public ArrayList<Object> getAll() {
-        ArrayList<Object> career_types= new ArrayList<Object>();
+        ArrayList<Object> sols= new ArrayList<Object>();
         try {
-            String getSQL="SELECT * FROM `career_type`";
+            String getSQL="SELECT * FROM `solution_like`";
             PreparedStatement getST= connection.prepareStatement(getSQL);
             ResultSet rs=getST.executeQuery();
             while (rs.next()) {     
-                CareerType career_type= new CareerType(rs.getInt("career_id"), rs.getString("career_title"),rs.getString("career_description"));
-                career_types.add(career_type);
+                SolutionLike sol= new SolutionLike(rs.getInt("s_id"),rs.getInt("u_id"));
+                sols.add(sol);
             }
             
         } catch (Exception e) {
         }
-        return career_types;
+        return sols;
     }
 
     @Override
     public boolean save(Object ob) {
-        CareerType ct=(CareerType) ob; 
+       SolutionLike sol=(SolutionLike) ob; 
        try {  
          
-           String sqlString= "INSERT INTO `career_type`"
-                   + " ( `career_title`, `career_description`)"
-                   + " VALUES (?,?)";
+           String sqlString= "INSERT INTO `solution_like`"
+                   + " (`u_id` )"
+                   + " VALUES (?)";
            PreparedStatement insertStatement= connection.prepareStatement(sqlString);
-           insertStatement.setString(1,ct.getCarrer_title());
-           insertStatement.setString(2, ct.getCareer_description());
-          
+           insertStatement.setFloat(1,sol.getU_id());
            int result=insertStatement.executeUpdate();
           
            if (result==0) {
@@ -66,16 +63,15 @@ public class CareerTypeRepository implements RepositoryInterface{
 
     @Override
     public boolean update(Object ob) {
-    CareerType carrers=(CareerType) ob; 
+    SolutionLike sol=(SolutionLike) ob; 
        try {  
          
-           String sqlString= "UPDATE `carrer_type` SET" 
-                   + " `carrer_title`=?, `career_description`=?"
-                   + " WHERE `caree_id`=?";
+           String sqlString= "UPDATE `solution_like` SET" 
+                   + " `u_id`=?"
+                   + " WHERE `s_id`=?";
            PreparedStatement updateStatement= connection.prepareStatement(sqlString);
-           updateStatement.setString(1,carrers.getCarrer_title());
-           updateStatement.setString(2,carrers.getCareer_description());
-           updateStatement.setInt(3, carrers.getCaree_id());
+           updateStatement.setInt(1,sol.getU_id());
+           updateStatement.setInt(2,sol.getS_id());
            
            int result=updateStatement.executeUpdate();
           
