@@ -127,6 +127,58 @@ public class SolutionRepository implements  RepositoryInterface{
         }
         return result;
     }
+       
+       
+       public  Map getRatingSolution(int s_id) {  
+          Map result= new HashMap();
+        try {
+            String getSQL="SELECT sl.s_title,sl.s_content,lv.likes,sub.subs,user.email as email,user.fullName as contributer,c_sl.rating as rating"
+                    + " FROM `solution` sl LEFT JOIN likeview lv ON sl.s_id= lv.s_id"
+                    + " LEFT JOIN subcribed_view sub ON sl.s_id= sub.s_id "
+                    + "LEFT JOIN child_solution c_sl ON sl.s_id= c_sl.s_id JOIN user ON sl.u_id= user.u_id"
+                    + " WHERE sl.s_id= ? ";
+            PreparedStatement getST= connection.prepareStatement(getSQL);
+            getST.setInt(1, s_id);
+            ResultSet rs=getST.executeQuery();
+            while (rs.next()) {  
+   
+                result.put("title",rs.getString("s_title"));
+                result.put("content",rs.getString("s_content"));
+                result.put("likes",rs.getInt("likes"));
+                result.put("subs",rs.getInt("subs"));
+                result.put("contributer",rs.getString("contributer"));
+                result.put("rating",rs.getInt("rating"));
+                
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+       
+       public int isSubcribed(int s_id,int u_id){
+           
+           try {
+           String sqlString= "SELECT * FROM `solution_subcribed` WHERE solution_subcribed.s_id=? and solution_subcribed.u_id=?";
+           PreparedStatement getStatement= connection.prepareStatement(sqlString);
+                           getStatement.setInt(1,s_id);     
+                           getStatement.setInt(2,u_id);     
+           ResultSet rs= getStatement.executeQuery();
+           
+               while (rs.next()) {          
+                   return 1;
+                   
+               }
+       } catch (Exception e) {
+           e.printStackTrace();
+           return 0;
+       }
+         return 0;
+       
+       }
+       
+       
     @Override
      public boolean save(Object ob) {
         try {
@@ -191,6 +243,7 @@ public class SolutionRepository implements  RepositoryInterface{
     
     public static void main(String[] args) {
         SolutionRepository soRepository= new SolutionRepository();
-        soRepository.getTopbyPage(1);
+        Map result= soRepository.getRatingSolution(2);
+        System.out.println(soRepository.isSubcribed(1, 2));
     }
 }

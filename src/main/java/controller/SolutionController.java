@@ -61,7 +61,7 @@ public class SolutionController {
         }
         return respone;
     }
-     @RequestMapping(value = "/get_user_solution",method=RequestMethod.GET)
+    @RequestMapping(value = "/get_user_solution",method=RequestMethod.GET)
     public Map getRatedSolutionByC_id(@RequestParam(name="token") String token,
                                      @RequestParam(name="c_id") String c_idStr){
         Map respone= new HashMap();
@@ -76,6 +76,21 @@ public class SolutionController {
             respone.put("solutions",solutionList);
             
         }
+        return respone;
+    }
+     @RequestMapping(value = "/get_solution",method=RequestMethod.GET)
+    public Map getSolutionBys_id(@RequestParam(name="s_id") String s_id_str,
+                                 @RequestParam(name="token") String token){
+        Map respone= new HashMap();
+        int s_id=Integer.parseInt(s_id_str);
+        Token tokenOb = tokenRepostirory.getTokenByCode(token);
+         if (tokenOb==null) {
+             respone.put("status","0"); 
+         } else {
+             respone= solutionRepository.getRatingSolution(s_id);
+             respone.put("subcribed",solutionRepository.isSubcribed(s_id, tokenOb.getU_id()));
+         }
+        
         return respone;
     }
     

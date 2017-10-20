@@ -7,6 +7,7 @@ package controller;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
+import entity.Child;
 import entity.Token;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,7 +25,11 @@ import javax.ws.rs.core.Response;
 import repository.ChildChildRepository;
 import repository.ExtraInfoRepository;
 import repository.TokenRepository;
-
+import DataUtil.DataUtil;
+import entity.ExtraInfo;
+import java.text.ParseException;
+import java.util.Date;
+import repository.ChildRepository;
 /**
  *
  * @author AnNguyen
@@ -34,7 +39,7 @@ public class UploadService {
     String root= "C:\\Users\\AnNguyen\\Documents\\NetBeansProjects"
                         + "\\Diagnosis_services\\src\\main\\webapp\\files\\";
     TokenRepository tokenRepository=new TokenRepository();
-    ChildChildRepository childRepository = new ChildChildRepository();
+    ChildRepository childRepository = new ChildRepository();
     ExtraInfoRepository extraInfoRepository= new ExtraInfoRepository();
     @POST
     @Path("/newChild")
@@ -51,15 +56,33 @@ public class UploadService {
                 @FormDataParam ("mother_career") String mother_career,
                 @FormDataParam ("monthly_income") String monthly_income,
                 @FormDataParam ("child_sex") String child_sex
-                                    ) {
+                                    ) throws ParseException {
                 Map respone = new HashMap();
                 Token tokenOb = tokenRepository.getTokenByCode(token);
                 String uploadedFileLocation = root+ fileDetail.getFileName();
                 String fileName= fileDetail.getFileName();
-                if (token==null) {
+                if (tokenOb==null) {
                     respone.put("status","0");
                 } else {
+                    Date dateCreated=new Date();
+                    Date birthDate= DataUtil.StringtoDate(date_of_birth);
                     writeToFile(uploadedInputStream, uploadedFileLocation);
+                    Child child= new Child(0,tokenOb.getU_id() ,
+                            fullname, DataUtil.toSQLDATE(birthDate), father,
+                            mother,DataUtil.toSQLDATE(dateCreated), 0, mother);
+                    int new_c_id=childRepository.newAndreturnId(child);
+                    int father_career_id= Integer.parseInt(father_career);
+                    int mother_career_id= Integer.parseInt(mother_career);
+                    int monthly_income_int= Integer.parseInt(monthly_income);
+                    int child_sex_int = Integer.parseInt(child_sex);
+                    
+                    ExtraInfo extraInfor= new ExtraInfo(new_c_id, father_career_id, 0,
+                            mother_career_id, monthly_income_int,
+                            0, 0, child_sex_int, 0);
+                    extraInfoRepository.save(extraInfor);
+                    child.setC_id(new_c_id);
+                    respone.put("status","1");
+                    respone.put("child", child);
                     
                 }
 		
@@ -69,7 +92,7 @@ public class UploadService {
                 
 		
 
-                return null;
+                return respone;
 	}
 
 	// save uploaded file to new location
