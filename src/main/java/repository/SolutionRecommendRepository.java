@@ -5,9 +5,8 @@
  */
 package repository;
 
-import entity.CareerType;
-import entity.TestType;
-import entity.User;
+import entity.SolutionLike;
+import entity.SolutionRecommend;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,37 +16,36 @@ import java.util.ArrayList;
  *
  * @author VanHau
  */
-public class CareerTypeRepository implements RepositoryInterface{
-    private static Connection connection= Conector.getConnection();
+public class SolutionRecommendRepository implements RepositoryInterface{
+            private static Connection connection= Conector.getConnection();
      @Override
     public ArrayList<Object> getAll() {
-        ArrayList<Object> career_types= new ArrayList<Object>();
+        ArrayList<Object> sols= new ArrayList<Object>();
         try {
-            String getSQL="SELECT * FROM `career_type`";
+            String getSQL="SELECT * FROM `child_solution_recommend`";
             PreparedStatement getST= connection.prepareStatement(getSQL);
             ResultSet rs=getST.executeQuery();
             while (rs.next()) {     
-                CareerType career_type= new CareerType(rs.getInt("career_id"), rs.getString("career_title"),rs.getString("career_description"));
-                career_types.add(career_type);
+                SolutionRecommend solu= new SolutionRecommend(rs.getInt("c_id"),rs.getInt("s_id"),rs.getInt("rating"));
+                sols.add(solu);
             }
             
         } catch (Exception e) {
         }
-        return career_types;
+        return sols;
     }
 
     @Override
     public boolean save(Object ob) {
-        CareerType ct=(CareerType) ob; 
+       SolutionRecommend sol=(SolutionRecommend) ob; 
        try {  
          
-           String sqlString= "INSERT INTO `career_type`"
-                   + " ( `career_title`, `career_description`)"
+           String sqlString= "INSERT INTO `child_solution_recommend`"
+                   + " (`s_id`,`rating` )"
                    + " VALUES (?,?)";
            PreparedStatement insertStatement= connection.prepareStatement(sqlString);
-           insertStatement.setString(1,ct.getCareer_title());
-           insertStatement.setString(2, ct.getCareer_description());
-          
+           insertStatement.setFloat(1,sol.getS_id());
+           insertStatement.setFloat(2,sol.getRating());
            int result=insertStatement.executeUpdate();
           
            if (result==0) {
@@ -66,16 +64,16 @@ public class CareerTypeRepository implements RepositoryInterface{
 
     @Override
     public boolean update(Object ob) {
-    CareerType carrers=(CareerType) ob; 
+    SolutionRecommend sol=(SolutionRecommend) ob; 
        try {  
          
-           String sqlString= "UPDATE `carrer_type` SET" 
-                   + " `carrer_title`=?, `career_description`=?"
-                   + " WHERE `caree_id`=?";
+           String sqlString= "UPDATE `child_solution_recommend` SET" 
+                   + " `s_id`=?,`rating`=?"
+                   + " WHERE `c_id`=?";
            PreparedStatement updateStatement= connection.prepareStatement(sqlString);
-           updateStatement.setString(1,carrers.getCareer_title());
-           updateStatement.setString(2,carrers.getCareer_description());
-           updateStatement.setInt(3, carrers.getCareer_id());
+           updateStatement.setInt(1,sol.getS_id());
+           updateStatement.setInt(2,sol.getRating());
+           updateStatement.setInt(3,sol.getC_id());
            
            int result=updateStatement.executeUpdate();
           
@@ -97,10 +95,5 @@ public class CareerTypeRepository implements RepositoryInterface{
     public boolean deleteById(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    public static void main(String[] args) {
-        CareerTypeRepository careerTypeRepository= new CareerTypeRepository();
-        int size=careerTypeRepository.getAll().size();
-        
-        System.out.println(size);
-    }
 }
+
