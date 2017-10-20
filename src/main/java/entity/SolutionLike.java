@@ -9,13 +9,12 @@ package entity;
 public class SolutionLike {
     private int s_id;
     private int u_id;
-
-    public SolutionLike() {
-    }
-
     public SolutionLike(int s_id, int u_id) {
         this.s_id = s_id;
         this.u_id = u_id;
+    }
+
+    public SolutionLike() {
     }
 
     public int getS_id() {
@@ -33,6 +32,6 @@ public class SolutionLike {
     public void setU_id(int u_id) {
         this.u_id = u_id;
     }
-
-   
+    
 }
+   
